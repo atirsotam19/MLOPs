@@ -96,6 +96,53 @@ def test_data(df):
     },
         )
     suite_loans.add_expectation(expectation_configuration=expectation_education)
+    
+# Self Employed Expectation
+    expectation_self_employed = ExpectationConfiguration(
+    expectation_type="expect_column_distinct_values_to_be_in_set",
+    kwargs={
+        "column": "self_employed",
+        "value_set" : ['Yes', 'No']
+    },
+        )
+    suite_loans.add_expectation(expectation_configuration=expectation_self_employed)
+# Loan Status Expectation
+    if "loan_status" in df.columns and df["loan_status"].notnull().any():
+        expectation_loan_status = ExpectationConfiguration(
+        expectation_type="expect_column_distinct_values_to_be_in_set",
+        kwargs={
+            "column": "loan_status",
+            "value_set" : ['Approved', 'Rejected']
+        },
+            )
+        suite_loans.add_expectation(expectation_configuration=expectation_loan_status)
+        
+        expectation_loan_status_not_null = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_not_be_null",
+        kwargs={
+            "column": "loan_status"
+        },
+            )
+        suite_loans.add_expectation(expectation_configuration=expectation_loan_status_not_null)
+# Number of Dependents Expectation   
+    expectation_dependents_type = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_be_of_type",
+        kwargs={
+            "column": "no_of_dependents",
+            "type_": "int64",  
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_dependents_type)
+
+    expectation_dependents_range = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_be_between",
+        kwargs={
+            "column": "no_of_dependents",
+            "min_value": 0,
+            "max_value": 15,
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_dependents_range)
 
     # EXPECTATIONS FOR BANK PROJECT (PLEASE DELETE THESE ARE JUST EXAMPLES SO YOU HAVE SOME INSPIRATION)
     expectation_balance = ExpectationConfiguration(
