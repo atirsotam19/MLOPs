@@ -40,10 +40,13 @@
 # https://docs.kedro.org/en/stable/data/data_catalog.html
 
 # PROJECT DATA CATALOG
-
-loans:
-  type: pandas.CSVDataset
+raw_loans:
+  type: pandas.CSVDataSet
   filepath: data/01_raw/loans.csv
+
+cleaned_loans:
+  type: pandas.CSVDataSet
+  filepath: data/02_intermediate/cleaned_loans.csv
 
 # EXEMPLE DATA CATALOG
 companies:
