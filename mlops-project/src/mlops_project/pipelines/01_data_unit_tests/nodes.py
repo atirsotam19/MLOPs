@@ -17,7 +17,7 @@ from pathlib import Path
 from kedro.config import OmegaConfigLoader
 from kedro.framework.project import settings
 
-
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -68,8 +68,16 @@ def get_validation_results(checkpoint_result):
 
 
 def test_data(df):
-    context = gx.get_context(context_root_dir = "//..//..//gx")
-    datasource_name = "bank_datasource"
+    # Define project root (two levels up from nodes.py)
+    project_root = Path(__file__).parents[4]
+
+    # Construct absolute path to your gx directory
+    gx_path = project_root / "gx"
+
+    # Pass as string to Great Expectations context
+    context = gx.get_context(context_root_dir=str(gx_path))
+
+    datasource_name = "loans_datasource"
     try:
         datasource = context.sources.add_pandas(datasource_name)
         logger.info("Data Source created.")
@@ -77,18 +85,19 @@ def test_data(df):
         logger.info("Data Source already exists.")
         datasource = context.datasources[datasource_name]
 
-    suite_bank = context.add_or_update_expectation_suite(expectation_suite_name="Bank")
+    suite_loans = context.add_or_update_expectation_suite(expectation_suite_name="Loans")
     
-    #add more expectations to your data
-    expectation_marital = ExpectationConfiguration(
+    # OUR EXPECTATIONS (I ALREADY DID ONE FOR YOU, PLEASE ADD YOURS)
+    expectation_education = ExpectationConfiguration(
     expectation_type="expect_column_distinct_values_to_be_in_set",
     kwargs={
-        "column": "marital",
-        "value_set" : ['married', 'single', 'divorced']
+        "column": "education",
+        "value_set" : ['Graduate', 'Not Graduate']
     },
         )
-    suite_bank.add_expectation(expectation_configuration=expectation_marital)
+    suite_loans.add_expectation(expectation_configuration=expectation_education)
 
+    # EXPECTATIONS FOR BANK PROJECT (PLEASE DELETE THESE ARE JUST EXAMPLES SO YOU HAVE SOME INSPIRATION)
     expectation_balance = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
         kwargs={
@@ -97,7 +106,7 @@ def test_data(df):
             "min_value": 0
         },
     )
-    suite_bank.add_expectation(expectation_configuration=expectation_balance)
+    suite_loans.add_expectation(expectation_configuration=expectation_balance)
 
     expectation_age = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
@@ -107,10 +116,11 @@ def test_data(df):
             "min_value": 18
         },
     )
-    suite_bank.add_expectation(expectation_configuration=expectation_age)
+    suite_loans.add_expectation(expectation_configuration=expectation_age)
 
 
-    context.add_or_update_expectation_suite(expectation_suite=suite_bank)
+    # EXPECTATIONS END HERE, DON'T CHANGE ANYTHING BELOW THIS LINE
+    context.add_or_update_expectation_suite(expectation_suite=suite_loans)
 
     data_asset_name = "test"
     try:
@@ -121,14 +131,13 @@ def test_data(df):
 
     batch_request = data_asset.build_batch_request(dataframe= df)
 
-
     checkpoint = gx.checkpoint.SimpleCheckpoint(
         name="checkpoint_marital",
         data_context=context,
         validations=[
             {
                 "batch_request": batch_request,
-                "expectation_suite_name": "Bank",
+                "expectation_suite_name": "Loans",
             },
         ],
     )
@@ -146,5 +155,4 @@ def test_data(df):
     log = logging.getLogger(__name__)
     log.info("Data passed on the unit data tests")
   
-
     return df_validation
