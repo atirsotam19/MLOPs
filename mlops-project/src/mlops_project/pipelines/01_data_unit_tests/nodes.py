@@ -88,6 +88,7 @@ def test_data(df):
     suite_loans = context.add_or_update_expectation_suite(expectation_suite_name="Loans")
     
     # OUR EXPECTATIONS (I ALREADY DID ONE FOR YOU, PLEASE ADD YOURS)
+# Category Expectation
 # Education Expectation
     expectation_education = ExpectationConfiguration(
     expectation_type="expect_column_distinct_values_to_be_in_set",
@@ -147,6 +148,32 @@ def test_data(df):
     )
     suite_loans.add_expectation(expectation_configuration=expectation_loan_term)
 
+# Continuos Expectation
+
+# Income Annum
+    expectation_income_annum = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_be_between",
+        kwargs={
+             "column": "income_annum",
+             "min_value": 2.000000e+05,
+             "max_value": 9.900000e+06,
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_income_annum)
+    
+    mean_value = 5.059124e6
+    margin = 0.5e6  
+
+    expectation_income_mean = ExpectationConfiguration(
+        expectation_type="expect_column_mean_to_be_between",
+        kwargs={
+            "column": "income_annum",
+            "min_value": mean_value - margin,
+            "max_value": mean_value + margin,
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_income_mean)
+##########
     # EXPECTATIONS FOR BANK PROJECT (PLEASE DELETE THESE ARE JUST EXAMPLES SO YOU HAVE SOME INSPIRATION)
     expectation_balance = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
