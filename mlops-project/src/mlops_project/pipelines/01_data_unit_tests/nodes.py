@@ -88,11 +88,12 @@ def test_data(df):
     suite_loans = context.add_or_update_expectation_suite(expectation_suite_name="Loans")
     
     # OUR EXPECTATIONS (I ALREADY DID ONE FOR YOU, PLEASE ADD YOURS)
+# Education Expectation
     expectation_education = ExpectationConfiguration(
     expectation_type="expect_column_distinct_values_to_be_in_set",
     kwargs={
-        "column": "education",
-        "value_set" : ['Graduate', 'Not Graduate']
+        "column": "Graduate",
+        "value_set" : [0, 1]
     },
         )
     suite_loans.add_expectation(expectation_configuration=expectation_education)
@@ -102,47 +103,49 @@ def test_data(df):
     expectation_type="expect_column_distinct_values_to_be_in_set",
     kwargs={
         "column": "self_employed",
-        "value_set" : ['Yes', 'No']
+        "value_set" : [0, 1]
     },
         )
     suite_loans.add_expectation(expectation_configuration=expectation_self_employed)
+
 # Loan Status Expectation
-    if "loan_status" in df.columns and df["loan_status"].notnull().any():
-        expectation_loan_status = ExpectationConfiguration(
+    if "loan_approved" in df.columns and df["loan_approved"].notnull().any():
+        expectation_loan_approved = ExpectationConfiguration(
         expectation_type="expect_column_distinct_values_to_be_in_set",
         kwargs={
-            "column": "loan_status",
-            "value_set" : ['Approved', 'Rejected']
+            "column": "loan_approved",
+            "value_set" : [0, 1]
         },
             )
-        suite_loans.add_expectation(expectation_configuration=expectation_loan_status)
+        suite_loans.add_expectation(expectation_configuration=expectation_loan_approved)
         
-        expectation_loan_status_not_null = ExpectationConfiguration(
+        expectation_loan_approved_not_null = ExpectationConfiguration(
         expectation_type="expect_column_values_to_not_be_null",
         kwargs={
-            "column": "loan_status"
+            "column": "loan_approved"
         },
             )
-        suite_loans.add_expectation(expectation_configuration=expectation_loan_status_not_null)
-# Number of Dependents Expectation   
-    expectation_dependents_type = ExpectationConfiguration(
-        expectation_type="expect_column_values_to_be_of_type",
-        kwargs={
-            "column": "no_of_dependents",
-            "type_": "int64",  
-        },
-    )
-    suite_loans.add_expectation(expectation_configuration=expectation_dependents_type)
+        suite_loans.add_expectation(expectation_configuration=expectation_loan_approved_not_null)
 
-    expectation_dependents_range = ExpectationConfiguration(
-        expectation_type="expect_column_values_to_be_between",
+# Number of Dependents Expectation   
+    expectation_dependents = ExpectationConfiguration(
+        expectation_type="expect_column_distinct_values_to_be_in_set",
         kwargs={
             "column": "no_of_dependents",
-            "min_value": 0,
-            "max_value": 15,
+            "value_set": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
         },
     )
-    suite_loans.add_expectation(expectation_configuration=expectation_dependents_range)
+    suite_loans.add_expectation(expectation_configuration=expectation_dependents)
+
+# Loan Term Expectation
+    expectation_loan_term = ExpectationConfiguration(
+        expectation_type="expect_column_distinct_values_to_be_in_set",
+        kwargs={
+            "column": "loan_term",
+            "value_set": ["2", "4", "6", "8", "10", "12", "14", "16", "18", "20"],
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_loan_term)
 
     # EXPECTATIONS FOR BANK PROJECT (PLEASE DELETE THESE ARE JUST EXAMPLES SO YOU HAVE SOME INSPIRATION)
     expectation_balance = ExpectationConfiguration(
@@ -164,7 +167,6 @@ def test_data(df):
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_age)
-
 
     # EXPECTATIONS END HERE, DON'T CHANGE ANYTHING BELOW THIS LINE
     context.add_or_update_expectation_suite(expectation_suite=suite_loans)
