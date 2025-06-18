@@ -69,7 +69,7 @@ from kedro.pipeline import Pipeline, pipeline
 
 # OUR PROJECT
 
-from loans_pipelines import (
+from mlops_project.pipelines import (
     data_cleaning_00 as data_cleaning_pipeline,
 #    data_unit_tests_01 as data_tests,
 #    data_ingestion_02 as data_ingestion,
