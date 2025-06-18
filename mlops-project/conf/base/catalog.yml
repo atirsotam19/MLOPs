@@ -41,46 +41,46 @@
 
 # PROJECT DATA CATALOG
 raw_loans:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/01_raw/raw_loans.csv
 
 cleaned_loans:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/02_intermediate/cleaned_loans.csv
 
-ingested_data:
-  type: pandas.CSVDataSet
-  filepath: data/02_intermediate/ingested_data.csv
+#ingested_data:
+#  type: pandas.CSVDataset
+#  filepath: data/02_intermediate/ingested_data.csv
 
-ref_data:
-  type: pandas.CSVDataSet
-  filepath: data/02_intermediate/ref_data.csv
+#ref_data:
+#  type: pandas.CSVDataset
+#  filepath: data/02_intermediate/ref_data.csv
 
-ana_data:
-  type: pandas.CSVDataSet
-  filepath: data/02_intermediate/ana_data.csv
+#ana_data:
+#  type: pandas.CSVDataset
+#  filepath: data/02_intermediate/ana_data.csv
 
-X_train:
-  type: pandas.CSVDataSet
-  filepath: data/05_model_input/X_train.csv
+#X_train:
+#  type: pandas.CSVDataset
+#  filepath: data/05_model_input/X_train.csv
 
-y_train:
-  type: pandas.CSVDataSet
-  filepath: data/05_model_input/y_train.csv
+#y_train:
+#  type: pandas.CSVDataset
+#  filepath: data/05_model_input/y_train.csv
 
-X_test:
-  type: pandas.CSVDataSet
-  filepath: data/05_model_input/X_test.csv
+#X_test:
+#  type: pandas.CSVDataset
+#  filepath: data/05_model_input/X_test.csv
 
-y_test:
-  type: pandas.CSVDataSet
-  filepath: data/05_model_input/y_test.csv
+#y_test:
+#  type: pandas.CSVDataset
+#  filepath: data/05_model_input/y_test.csv
 
-best_columns:
-  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
-  dataset:
-    type: pickle.PickleDataset
-    filepath: data/06_models/best_cols.pkl
+#best_columns:
+#  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+#  dataset:
+#    type: pickle.PickleDataset
+#    filepath: data/06_models/best_cols.pkl
 
 # EXEMPLE DATA CATALOG
 #companies:
