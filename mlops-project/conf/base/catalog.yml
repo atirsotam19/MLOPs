@@ -41,8 +41,7 @@
 
 # PROJECT DATA CATALOG
 raw_loans:
-  #type: pandas.CSVDataSet
-  type: csv.CSVDataSet
+  type: pandas.CSVDataSet
   filepath: data/01_raw/raw_loans.csv
 
 cleaned_loans:
