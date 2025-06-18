@@ -14,7 +14,7 @@ def create_pipeline(**kwargs) -> Pipeline:
         [
             node(
                 func= split_random,
-                inputs= "ingested_data",
+                inputs= "cleaned_loans",           # mudar para ingested_data quando a pipeline da data ingestion funcionar
                 outputs=["ref_data","ana_data"],
                 name="split_out_of_sample",
             ),

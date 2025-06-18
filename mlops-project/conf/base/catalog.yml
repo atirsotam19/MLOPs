@@ -56,13 +56,13 @@ ingested_data:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/ingested_data.csv
 
-#ref_data:
-#  type: pandas.CSVDataset
-#  filepath: data/02_intermediate/ref_data.csv
+ref_data:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/ref_data.csv
 
-#ana_data:
-#  type: pandas.CSVDataset
-#  filepath: data/02_intermediate/ana_data.csv
+ana_data:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/ana_data.csv
 
 #X_train:
 #  type: pandas.CSVDataset
