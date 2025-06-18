@@ -94,7 +94,7 @@ def test_data(df):
     expectation_education = ExpectationConfiguration(
     expectation_type="expect_column_distinct_values_to_be_in_set",
     kwargs={
-        "column": "Graduate",
+        "column": "graduate",
         "value_set" : [0, 1]
     },
         )
