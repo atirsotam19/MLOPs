@@ -1,8 +1,13 @@
 import pandas as pd
+import datetime
+
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     # Remove leading spaces from column names
     df.columns = df.columns.str.strip()
+
+    start_time = datetime.datetime(1989, 12, 13)
+    df["datetime"] = [start_time + datetime.timedelta(seconds=i) for i in range(len(df))]
 
     # Clean categorical columns by stripping spaces from string values
     categorical_columns = ["education", "self_employed", "loan_status"]
