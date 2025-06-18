@@ -254,13 +254,7 @@ def ingestion(
     if parameters["target_column"] in categorical_features:
         categorical_features.remove(parameters["target_column"])
 
-    months_int = {'jan':1, 'feb':2, 'mar':3, 'apr':4,'may':5,'jun':6, 'jul':7 , 'aug':8 , 'sep':9 , 'oct':10, 'nov': 11, 'dec':12 }
-    df = df.reset_index()
-    df["datetime"] = pd.to_datetime({
-    "year": 2024,
-    "month": df["month"].map(months_int),
-    "day": 1
-    })
+    
 
     validation_expectation_suite_numerical = build_expectation_suite("numerical_expectations","numerical_features")
     validation_expectation_suite_categorical = build_expectation_suite("categorical_expectations","categorical_features")
