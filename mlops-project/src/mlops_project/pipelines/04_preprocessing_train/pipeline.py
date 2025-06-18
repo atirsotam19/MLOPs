@@ -33,11 +33,22 @@ def create_pipeline(**kwargs) -> Pipeline:
         )
     ])
 
-# preprocessed_training_data:
+
+# preprocessed_train_data:
 #   type: pandas.CSVDataset
 #   filepath: data/03_primary/preprocessed_train_data.csv
 
-# encoder_transform:
+# preprocessed_batch_data:
+#   type: pandas.CSVDataset
+#   filepath: data/03_primary/preprocessed_batch_data.csv
+
+# trained_standard_scaler:
+#   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+#   dataset:
+#     type: pickle.PickleDataset
+#     filepath: data/04_feature/scaler.pkl
+
+# trained_one_hot_encoder:
 #   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
 #   dataset:
 #     type: pickle.PickleDataset
