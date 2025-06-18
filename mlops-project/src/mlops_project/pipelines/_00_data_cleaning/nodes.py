@@ -19,7 +19,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
 
     # Map and drop 'education'
     if "education" in df.columns:
-        df["Graduate"] = df["education"].map({"Graduate": 1, "Not Graduate": 0})
+        df["graduate"] = df["education"].map({"Graduate": 1, "Not Graduate": 0})
         df.drop(columns=["education"], inplace=True)
 
     # Map values for 'self_employed' and keep the column
