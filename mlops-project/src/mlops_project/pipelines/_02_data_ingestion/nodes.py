@@ -23,7 +23,7 @@ credentials = conf_loader["credentials"]
 
 logger = logging.getLogger(__name__)
 
-def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> ExpectationSuite:
+def build_expectation_suite(expectation_suite_name: str, feature_group: str, features: list = None) -> ExpectationSuite:
     """
     Builder used to retrieve an instance of the validation expectation suite.
     
@@ -88,6 +88,8 @@ def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> 
         
         binary_columns = ['graduate', 'self_employed', 'loan_approved']
         for col in binary_columns:
+            if features and col not in features:
+                continue
             # Checks if the values are 0 or 1
             expectation_suite_bank.add_expectation(
                 ExpectationConfiguration(
@@ -187,7 +189,7 @@ def to_feature_store(
         name=group_name,
         version=feature_group_version,
         description= description,
-        primary_key=["index"],
+        primary_key=["loan_id"],
         event_time="datetime",
         online_enabled=False,
         expectation_suite=validation_expectation_suite,
@@ -243,13 +245,14 @@ def ingestion(
     
     
     """
+    df["datetime"] = pd.to_datetime(df["datetime"])
 
     df = df.drop_duplicates()
 
     logger.info(f"The dataset contains {len(df.columns)} columns.")
 
-    numerical_features = df.select_dtypes(exclude=['object','string','category']).columns.tolist()
-    categorical_features = df.select_dtypes(include=['object','string','category']).columns.tolist()
+    numerical_features = ["bank_asset_value", "commercial_assets_value", "residential_assets_value", "cibil_score", "loan_amount", "income_annum", "luxury_assets_value"]
+    categorical_features = ["self_employed", "no_of_dependents", "loan_term", "graduate", "loan_approved"]
 
     if parameters["target_column"] in categorical_features:
         categorical_features.remove(parameters["target_column"])
@@ -257,16 +260,20 @@ def ingestion(
     
 
     validation_expectation_suite_numerical = build_expectation_suite("numerical_expectations","numerical_features")
-    validation_expectation_suite_categorical = build_expectation_suite("categorical_expectations","categorical_features")
+    validation_expectation_suite_categorical = build_expectation_suite("categorical_expectations","categorical_features", features=categorical_features)
     validation_expectation_suite_target = build_expectation_suite("target_expectations","target")
 
     numerical_feature_descriptions =[]
     categorical_feature_descriptions =[]
     target_feature_descriptions =[]
     
-    df_numeric = df[["index","datetime"] + numerical_features]
-    df_categorical = df[["index","datetime"] + categorical_features]
-    df_target = df[["index","datetime"] + [parameters["target_column"]]]
+
+    df_numeric = df[["loan_id","datetime"] + numerical_features]
+    df_categorical = df[["loan_id","datetime"] + categorical_features]
+    df_target = df[["loan_id","datetime"] + [parameters["target_column"]]]
+
+
+
 
     if parameters["to_feature_store"]:
 
