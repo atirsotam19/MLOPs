@@ -48,9 +48,17 @@ cleaned_loans:
   type: pandas.CSVDataSet
   filepath: data/02_intermediate/cleaned_loans.csv
 
-  ingested_data:
+ingested_data:
   type: pandas.CSVDataset
-  filepath: data/03_intermediate/ingested_data.csv
+  filepath: data/02_intermediate/ingested_data.csv
+
+ref_data:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/ref_data.csv
+
+ana_data:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/ana_data.csv
 
 # EXEMPLE DATA CATALOG
 companies:
