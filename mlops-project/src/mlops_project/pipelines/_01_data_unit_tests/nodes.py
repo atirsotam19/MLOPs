@@ -156,8 +156,8 @@ def test_data(df):
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "income_annum",
-            "min_value": 2.7e6,  # 25º percentil
-            "max_value": 7.5e6,  # 75º percentil
+            "min_value": 300000.0,  # 1% percentil
+            "max_value": 9800000.0,  # 99% percentil
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_income_annum)
@@ -176,8 +176,8 @@ def test_data(df):
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "loan_amount",
-            "min_value": 7.7e6,    # 25º percentil
-            "max_value": 2.15e7,   # 75º percentil
+            "min_value": 700000.0,    #  1% percentil
+            "max_value": 35700000.0,   # 99% percentil
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_loan_amount)
@@ -197,8 +197,8 @@ def test_data(df):
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "residential_assets_value",
-            "min_value": 2.2e6,     # 25º percentil
-            "max_value": 1.13e7,    # 75º percentil
+            "min_value": 0.0,           # 1% percentil
+            "max_value": 25400000.0,    # 99% percentil
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_res_assets)
@@ -218,8 +218,8 @@ def test_data(df):
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "commercial_assets_value",
-            "min_value": 1.3e6,     # 25º percentil
-            "max_value": 7.6e6,     # 75º percentil
+            "min_value": 0.0,            # 1% percentil
+            "max_value": 16732000.0,     # 99% percentil
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_comm_assets)
@@ -239,8 +239,8 @@ def test_data(df):
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "luxury_assets_value",
-            "min_value": 7.5e6,     # 25º percentil
-            "max_value": 2.17e7,    # 75º percentil
+            "min_value": 700000.0,      # 1% percentil
+            "max_value": 36032000.0,    # 99% percentil
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_luxury_assets)
@@ -260,8 +260,8 @@ def test_data(df):
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "bank_asset_value",
-            "min_value": 2.3e6,      # 25º percentil
-            "max_value": 7.1e6,      # 75º percentil
+            "min_value": 200000.0,   # 1% percentil
+            "max_value": 13100000.0, # 99% percentil
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_bank_asset)
@@ -281,8 +281,8 @@ def test_data(df):
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "cibil_score",
-            "min_value": 453,     # 25º percentil
-            "max_value": 748,     # 75º percentil
+            "min_value": 304.00,     # 1% percentil
+            "max_value": 894.32,     # 99% percentil
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_cibil_score)
