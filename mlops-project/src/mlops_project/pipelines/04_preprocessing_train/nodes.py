@@ -33,11 +33,54 @@ def treat_outliers(data: pd.DataFrame) -> pd.DataFrame:
 def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
     """Create additional features from existing asset value columns."""
     df = data.copy()
-    
+
+    # Total of Assets
+    df["total_assets"] = (
+        df["residential_assets_value"]
+        + df["commercial_assets_value"]
+        + df["luxury_assets_value"]
+        + df["bank_asset_value"]
+    )
+
+    # Loan-to-Assets ratio
+    df["loan_to_assets_ratio"] = df["loan_amount"] / df["total_assets"].replace(0, 1)
+
+    # CIBIL score bin (low, medium, high)
+    df["cibil_score_bin"] = pd.cut(
+        df["cibil_score"],
+        bins=[-float("inf"), 500, 700, float("inf")],
+        labels=["low", "medium", "high"]
+    )
+
+    # Debt-to-income ratio
+    df["debt_to_income_ratio"] = df["loan_amount"] / df["income_annum"].replace(0, 1)
+
+    # Loan score formula
+    df["loan_score"] = (
+        (df["total_assets"] / 1_000_000)
+        + (0.1 * df["cibil_score"])
+        - (df["loan_amount"] / (df["income_annum"] - 500_000 * df["no_of_dependents"]).replace(0, 1))
+        + (5 * df["Graduate"])
+        - (3 * df["self_employed"])
+    )
+
+    # Assts-per-dependant ratio
+    df["assets_per_dependent"] = df["total_assets"] / (df["no_of_dependents"] + 1)
+
+    # Monthly loan payment
+    df["loan_amount_per_month"] = df["loan_amount"] / df["loan_term"].replace(0, 1)
+
+    # Liquid Assets
+    df["assets_minus_loan"] = df["total_assets"] - df["loan_amount"]
+
+    # Binary is the individual high risk? high debt or low vibil score
+    df["is_high_risk_profile"] = (
+        (df["cibil_score"] < 500) | (df["debt_to_income_ratio"] > 2.5)
+    ).astype(int)
 
     logger.info("Feature engineering completed.")
-    return df
 
+    return df
 
 def scale_encode(data: pd.DataFrame) -> pd.DataFrame:
     """Scale numerical and encode categorical features."""
