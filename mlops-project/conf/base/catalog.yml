@@ -52,9 +52,9 @@ reporting_tests:
   type: pandas.CSVDataset
   filepath: data/08_reporting/data_tests.csv
 
-#ingested_data:
-#  type: pandas.CSVDataset
-#  filepath: data/02_intermediate/ingested_data.csv
+ingested_data:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/ingested_data.csv
 
 #ref_data:
 #  type: pandas.CSVDataset

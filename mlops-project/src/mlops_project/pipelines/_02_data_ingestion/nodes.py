@@ -11,7 +11,6 @@ import pandas as pd
 
 from great_expectations.core import ExpectationSuite, ExpectationConfiguration
 
-
 from pathlib import Path
 
 from kedro.config import OmegaConfigLoader
@@ -87,7 +86,7 @@ def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> 
         
         # Categorical columns with binary values
         
-        binary_columns = ['Graduate', 'self_employed', 'loan_approved']
+        binary_columns = ['graduate', 'self_employed', 'loan_approved']
         for col in binary_columns:
             # Checks if the values are 0 or 1
             expectation_suite_bank.add_expectation(
@@ -132,8 +131,8 @@ def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> 
                 ExpectationConfiguration(
                     expectation_type="expect_column_distinct_values_to_be_in_set",
                     kwargs={
-                        "column": "loan_status",
-                        "value_set": ['approved', 'rejected'],
+                        "column": "loan_approved",
+                        "value_set": [0, 1],
                     },
                 )
             )
@@ -141,14 +140,11 @@ def build_expectation_suite(expectation_suite_name: str, feature_group: str) -> 
             expectation_suite_bank.add_expectation(
                 ExpectationConfiguration(
                     expectation_type="expect_column_values_to_not_be_null",
-                    kwargs={"column": "loan_status"},
+                    kwargs={"column": "loan_approved"},
                 )
             )
 
-
-     
     return expectation_suite_bank
-
 
 import hopsworks
 
@@ -225,8 +221,7 @@ def to_feature_store(
 
 
 def ingestion(
-    df1: pd.DataFrame,
-    df2: pd.DataFrame,
+    df: pd.DataFrame,
     parameters: Dict[str, Any]):
 
     """
@@ -249,29 +244,21 @@ def ingestion(
     
     """
 
-    common_columns= []
-    for i in df2.columns.tolist():
-        if i in df1.columns.tolist():
-            common_columns.append(i)
-    
-    assert len(common_columns)>0, "Wrong data collected"
+    df = df.drop_duplicates()
 
-    df_full = pd.merge(df1,df2, how = 'left',  on = common_columns  )
+    logger.info(f"The dataset contains {len(df.columns)} columns.")
 
-    df_full= df_full.drop_duplicates()
+    numerical_features = df.select_dtypes(exclude=['object','string','category']).columns.tolist()
+    categorical_features = df.select_dtypes(include=['object','string','category']).columns.tolist()
 
-
-    logger.info(f"The dataset contains {len(df_full.columns)} columns.")
-
-    numerical_features = df_full.select_dtypes(exclude=['object','string','category']).columns.tolist()
-    categorical_features = df_full.select_dtypes(include=['object','string','category']).columns.tolist()
-    categorical_features.remove(parameters["target_column"])
+    if parameters["target_column"] in categorical_features:
+        categorical_features.remove(parameters["target_column"])
 
     months_int = {'jan':1, 'feb':2, 'mar':3, 'apr':4,'may':5,'jun':6, 'jul':7 , 'aug':8 , 'sep':9 , 'oct':10, 'nov': 11, 'dec':12 }
-    df_full = df_full.reset_index()
-    df_full["datetime"] = pd.to_datetime({
+    df = df.reset_index()
+    df["datetime"] = pd.to_datetime({
     "year": 2024,
-    "month": df_full["month"].map(months_int),
+    "month": df["month"].map(months_int),
     "day": 1
     })
 
@@ -283,14 +270,14 @@ def ingestion(
     categorical_feature_descriptions =[]
     target_feature_descriptions =[]
     
-    df_full_numeric = df_full[["index","datetime"] + numerical_features]
-    df_full_categorical = df_full[["index","datetime"] + categorical_features]
-    df_full_target = df_full[["index","datetime"] + [parameters["target_column"]]]
+    df_numeric = df[["index","datetime"] + numerical_features]
+    df_categorical = df[["index","datetime"] + categorical_features]
+    df_target = df[["index","datetime"] + [parameters["target_column"]]]
 
     if parameters["to_feature_store"]:
 
         object_fs_numerical_features = to_feature_store(
-            df_full_numeric,"numerical_features",
+            df_numeric,"numerical_features",
             1,"Numerical Features",
             numerical_feature_descriptions,
             validation_expectation_suite_numerical,
@@ -298,21 +285,19 @@ def ingestion(
         )
 
         object_fs_categorical_features = to_feature_store(
-            df_full_categorical,"categorical_features",
+            df_categorical,"categorical_features",
             1,"Categorical Features",
             categorical_feature_descriptions,
             validation_expectation_suite_categorical,
             credentials["feature_store"]
         )
 
-        object_fs_taregt_features = to_feature_store(
-            df_full_target,"target_features",
+        object_fs_target_features = to_feature_store(
+            df_target,"target_features",
             1,"Target Features",
             target_feature_descriptions,
             validation_expectation_suite_target,
             credentials["feature_store"]
         )
 
-
-    return df_full
-
+    return df
