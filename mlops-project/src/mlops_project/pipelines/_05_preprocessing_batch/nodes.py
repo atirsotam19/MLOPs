@@ -44,7 +44,7 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
     )
 
     # Is the individual graduate and not self-employed? Boolean
-    df["is_graduate_and_employed"] = (df["Graduate"] & (df["self_employed"] == 0)).astype(int)
+    df["is_graduate_and_employed"] = (df["graduate"] & (df["self_employed"] == 0)).astype(int)
 
     # Loan-to-assets ratio
     df["loan_to_assets_ratio"] = df["loan_amount"] / df["total_assets"].replace(0, 1)
@@ -64,7 +64,7 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
         (df["total_assets"] / 1_000_000)
         + (0.1 * df["cibil_score"])
         - (df["loan_amount"] / (df["income_annum"] - 500_000 * df["no_of_dependents"]).replace(0, 1))
-        + (5 * df["Graduate"])
+        + (5 * df["graduate"])
         - (3 * df["self_employed"])
     )
 
@@ -93,12 +93,13 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def scale_encode(data: pd.DataFrame) -> pd.DataFrame:
+def scale_encode(data: pd.DataFrame, std_scaler, OH_encoder) -> pd.DataFrame:
     """Scale numerical and encode categorical features."""
     df = data.copy()
 
-    numerical_features = df.select_dtypes(include=["number"]).columns
-    categorical_features = df.select_dtypes(include=["object", "string", "category"]).columns
+    numerical_features = ["bank_asset_value", "commercial_assets_value", "residential_assets_value", "cibil_score", "loan_amount", "income_annum", "luxury_assets_value",
+    "total_assets","loan_to_assets_ratio", "debt_to_income_ratio", "loan_score", "assets_per_dependent", "loan_amount_per_month", "assets_minus_loan"]
+    categorical_features = ["no_of_dependents", "loan_term", "cibil_score_bin", "loan_term_group"]
 
     # Scale numeric features
     df[numerical_features] = std_scaler.transform(df[numerical_features])
@@ -122,4 +123,4 @@ def scale_encode(data: pd.DataFrame) -> pd.DataFrame:
 
     logger.info(f"The final dataframe has {len(df_final.columns)} columns.")
 
-    return df_final, std_scaler, OH_encoder
+    return df_final

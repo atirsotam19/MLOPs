@@ -74,9 +74,9 @@ from mlops_project.pipelines import (
     _01_data_unit_tests as data_tests,
     _02_data_ingestion as data_ingestion,
     _03_data_split as split_data,
-#   _04_preprocessing_train as preprocess_train,
-#   _05_preprocessing_batch as preprocessing_batch,
-#   _06_split_train_pipeline as split_train,
+    _04_preprocessing_train as preprocess_train,
+    _05_preprocessing_batch as preprocessing_batch,
+    _06_split_train_pipeline as split_train,
 )
 
 def register_pipelines() -> Dict[str, Pipeline]:
@@ -85,9 +85,9 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "data_unit_tests": data_tests.create_pipeline(),
         "data_ingestion": data_ingestion.create_pipeline(),
         "data_split": split_data.create_pipeline(),
-        #"preprocess_train": preprocess_train.create_pipeline(),
-        #"split_train": split_train.create_pipeline(),
-        #"preprocess_batch": preprocessing_batch.create_pipeline(),
+        "data_preprocess_train": preprocess_train.create_pipeline(),
+        "data_preprocess_batch": preprocessing_batch.create_pipeline(),
+        "data_split_train": split_train.create_pipeline(),
 
         # Optional combo pipelines
         #"full_training_pipeline": preprocess_train.create_pipeline() + split_train.create_pipeline(),

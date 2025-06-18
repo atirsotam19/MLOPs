@@ -3,14 +3,15 @@ This is a boilerplate pipeline 'preprocessing_batch_05'
 generated using Kedro 0.19.14
 """
 
-from kedro.pipeline import node, Pipeline, pipeline  # noqa
+from kedro.pipeline import node, Pipeline, pipeline  
+from .nodes import treat_outliers, feature_engineer, scale_encode
 
 
 def create_pipeline(**kwargs) -> Pipeline:
     return pipeline([
         node(
             func=treat_outliers,
-            inputs="preprocessed_train_data", ## MUDAR
+            inputs="ana_data", 
             outputs="outlier_treated_batch",
             name="treat_outliers_batch"
         ),
