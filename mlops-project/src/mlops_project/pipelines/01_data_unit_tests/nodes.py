@@ -89,6 +89,7 @@ def test_data(df):
     
     # OUR EXPECTATIONS (I ALREADY DID ONE FOR YOU, PLEASE ADD YOURS)
 # Category Expectation
+
 # Education Expectation
     expectation_education = ExpectationConfiguration(
     expectation_type="expect_column_distinct_values_to_be_in_set",
