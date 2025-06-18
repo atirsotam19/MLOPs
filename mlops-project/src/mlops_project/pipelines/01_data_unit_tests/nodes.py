@@ -154,25 +154,149 @@ def test_data(df):
     expectation_income_annum = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
         kwargs={
-             "column": "income_annum",
-             "min_value": 2.000000e+05,
-             "max_value": 9.900000e+06,
+            "column": "income_annum",
+            "min_value": 2.7e6,  # 25º percentil
+            "max_value": 7.5e6,  # 75º percentil
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_income_annum)
-    
-    mean_value = 5.059124e6
-    margin = 0.5e6  
-
     expectation_income_mean = ExpectationConfiguration(
         expectation_type="expect_column_mean_to_be_between",
         kwargs={
             "column": "income_annum",
-            "min_value": mean_value - margin,
-            "max_value": mean_value + margin,
+            "min_value": 848864,      # mean - 1.5*std
+            "max_value": 9269384,     # mean + 1.5*std
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_income_mean)
+    
+# Loan Amount
+    expectation_loan_amount = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_be_between",
+        kwargs={
+            "column": "loan_amount",
+            "min_value": 7.7e6,    # 25º percentil
+            "max_value": 2.15e7,   # 75º percentil
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_loan_amount)
+
+    expectation_loan_mean = ExpectationConfiguration(
+        expectation_type="expect_column_mean_to_be_between",
+        kwargs={
+            "column": "loan_amount",
+            "min_value": 1568405,     # mean - 1.5 * std
+            "max_value": 28698495,    # mean + 1.5 * std
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_loan_mean)
+    
+# Residential Assets Value
+    expectation_res_assets = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_be_between",
+        kwargs={
+            "column": "residential_assets_value",
+            "min_value": 2.2e6,     # 25º percentil
+            "max_value": 1.13e7,    # 75º percentil
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_res_assets)
+
+    expectation_res_assets_mean = ExpectationConfiguration(
+        expectation_type="expect_column_mean_to_be_between",
+        kwargs={
+            "column": "residential_assets_value",
+            "min_value": 0,          # mean - 1.5 * std 
+            "max_value": 1.7228073e7,  # mean + 1.5 * std
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_res_assets_mean)
+
+# Commercial Assets Value
+    expectation_comm_assets = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_be_between",
+        kwargs={
+            "column": "commercial_assets_value",
+            "min_value": 1.3e6,     # 25º percentil
+            "max_value": 7.6e6,     # 75º percentil
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_comm_assets)
+
+    expectation_comm_assets_mean = ExpectationConfiguration(
+        expectation_type="expect_column_mean_to_be_between",
+        kwargs={
+            "column": "commercial_assets_value",
+            "min_value": 0,             # mean - 1.5 * std
+            "max_value": 1.1556604e7,   # mean + 1.5 * std
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_comm_assets_mean)
+
+# Luxury Assets Value
+    expectation_luxury_assets = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_be_between",
+        kwargs={
+            "column": "luxury_assets_value",
+            "min_value": 7.5e6,     # 25º percentil
+            "max_value": 2.17e7,    # 75º percentil
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_luxury_assets)
+
+    expectation_luxury_assets_mean = ExpectationConfiguration(
+        expectation_type="expect_column_mean_to_be_between",
+        kwargs={
+            "column": "luxury_assets_value",
+            "min_value": 1_470_679,     # mean - 1.5 * std
+            "max_value": 28_781_941,    # mean + 1.5 * std
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_luxury_assets_mean)
+    
+# Bank Asset Value
+    expectation_bank_asset = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_be_between",
+        kwargs={
+            "column": "bank_asset_value",
+            "min_value": 2.3e6,      # 25º percentil
+            "max_value": 7.1e6,      # 75º percentil
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_bank_asset)
+
+    expectation_bank_asset_mean = ExpectationConfiguration(
+        expectation_type="expect_column_mean_to_be_between",
+        kwargs={
+            "column": "bank_asset_value",
+            "min_value": 101415,       # mean - 1.5 * std
+            "max_value": 9851969,      # mean + 1.5 * std
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_bank_asset_mean)
+
+# CIBIL Score
+    expectation_cibil_score = ExpectationConfiguration(
+        expectation_type="expect_column_values_to_be_between",
+        kwargs={
+            "column": "cibil_score",
+            "min_value": 453,     # 25º percentil
+            "max_value": 748,     # 75º percentil
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_cibil_score)
+
+    expectation_cibil_score_mean = ExpectationConfiguration(
+        expectation_type="expect_column_mean_to_be_between",
+        kwargs={
+            "column": "cibil_score",
+            "min_value": 341.29,  # mean - 1.5 * std
+            "max_value": 858.58,  # mean + 1.5 * std
+        },
+    )
+    suite_loans.add_expectation(expectation_configuration=expectation_cibil_score_mean)
+
+
 ##########
     # EXPECTATIONS FOR BANK PROJECT (PLEASE DELETE THESE ARE JUST EXAMPLES SO YOU HAVE SOME INSPIRATION)
     expectation_balance = ExpectationConfiguration(
