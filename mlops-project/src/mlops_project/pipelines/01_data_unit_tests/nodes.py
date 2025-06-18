@@ -296,29 +296,6 @@ def test_data(df):
     )
     suite_loans.add_expectation(expectation_configuration=expectation_cibil_score_mean)
 
-
-##########
-    # EXPECTATIONS FOR BANK PROJECT (PLEASE DELETE THESE ARE JUST EXAMPLES SO YOU HAVE SOME INSPIRATION)
-    expectation_balance = ExpectationConfiguration(
-        expectation_type="expect_column_values_to_be_between",
-        kwargs={
-            "column": "balance",
-            "max_value": 105000,
-            "min_value": 0
-        },
-    )
-    suite_loans.add_expectation(expectation_configuration=expectation_balance)
-
-    expectation_age = ExpectationConfiguration(
-        expectation_type="expect_column_values_to_be_between",
-        kwargs={
-            "column": "age",
-            "max_value": 100,
-            "min_value": 18
-        },
-    )
-    suite_loans.add_expectation(expectation_configuration=expectation_age)
-
     # EXPECTATIONS END HERE, DON'T CHANGE ANYTHING BELOW THIS LINE
     context.add_or_update_expectation_suite(expectation_suite=suite_loans)
 
