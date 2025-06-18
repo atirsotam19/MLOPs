@@ -43,7 +43,7 @@ def balance_(data):
     data['Neg_Balance'] = 0
     data['No_Balance'] = 0
     data['Pos_Balance'] = 0
-    data.loc[~data['balance']<0,'Neg_Balance'] = 1
+    data.loc[data['balance']<0,'Neg_Balance'] = 1
     data.loc[data['balance'] < 1,'bin_Balance'] = 0
     data.loc[(data['balance'] >= 1) & (data['balance'] < 100),'bin_Balance'] = 1
     data.loc[(data['balance'] >= 100) & (data['balance'] < 500),'bin_Balance'] = 2
