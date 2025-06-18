@@ -134,7 +134,7 @@ def test_data(df):
         expectation_type="expect_column_distinct_values_to_be_in_set",
         kwargs={
             "column": "no_of_dependents",
-            "value_set": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+            "value_set": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_dependents)
@@ -144,7 +144,7 @@ def test_data(df):
         expectation_type="expect_column_distinct_values_to_be_in_set",
         kwargs={
             "column": "loan_term",
-            "value_set": ["2", "4", "6", "8", "10", "12", "14", "16", "18", "20"],
+            "value_set": [2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_loan_term)
@@ -326,8 +326,56 @@ def test_data(df):
 
     pd_df_ge = gx.from_pandas(df)
 
-    assert pd_df_ge.expect_column_values_to_be_of_type("duration", "int64").success == True
-    assert pd_df_ge.expect_column_values_to_be_of_type("marital", "str").success == True
+    # Categorical or binary variables (expected as int or str)
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "no_of_dependents", ["int64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "self_employed", ["int64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "graduate", ["int64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "loan_approved", ["int64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "loan_term", ["int64"]
+    ).success == True
+
+    # Continuous/Numeric variables (allow int and float)
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "income_annum", ["int64", "float64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "loan_amount", ["int64", "float64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "residential_assets_value", ["int64", "float64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "commercial_assets_value", ["int64", "float64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "luxury_assets_value", ["int64", "float64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "bank_asset_value", ["int64", "float64"]
+    ).success == True
+
+    assert pd_df_ge.expect_column_values_to_be_in_type_list(
+        "cibil_score", ["int64", "float64"]
+    ).success == True
+
     #assert pd_df_ge.expect_table_column_count_to_equal(23).success == False
 
     log = logging.getLogger(__name__)
