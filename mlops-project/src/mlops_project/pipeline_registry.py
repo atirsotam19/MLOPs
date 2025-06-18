@@ -71,12 +71,12 @@ from kedro.pipeline import Pipeline, pipeline
 
 from mlops_project.pipelines import (
     _00_data_cleaning as data_cleaning_pipeline,
-#    data_unit_tests_01 as data_tests,
-#    data_ingestion_02 as data_ingestion,
-#    data_split_03 as split_data,
-#    preprocessing_train_04 as preprocess_train,
-#    preprocessing_batch_05 as preprocessing_batch,
-#    split_train_pipeline_06 as split_train,
+#   _01_data_unit_tests as data_tests,
+#   _02_data_ingestion as data_ingestion,
+#   _03_data_split as split_data,
+#   _04_preprocessing_train as preprocess_train,
+#   _05_preprocessing_batch as preprocessing_batch,
+#   _06_split_train_pipeline as split_train,
 )
 
 def register_pipelines() -> Dict[str, Pipeline]:
