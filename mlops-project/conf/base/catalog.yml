@@ -41,100 +41,100 @@
 
 # PROJECT DATA CATALOG
 raw_loans:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/01_raw/raw_loans.csv
 
 cleaned_loans:
-  type: pandas.CSVDataSet
+  type: pandas.CSVDataset
   filepath: data/02_intermediate/cleaned_loans.csv
 
-ingested_data:
-  type: pandas.CSVDataset
-  filepath: data/02_intermediate/ingested_data.csv
+#ingested_data:
+#  type: pandas.CSVDataset
+#  filepath: data/02_intermediate/ingested_data.csv
 
-ref_data:
-  type: pandas.CSVDataset
-  filepath: data/02_intermediate/ref_data.csv
+#ref_data:
+#  type: pandas.CSVDataset
+#  filepath: data/02_intermediate/ref_data.csv
 
-ana_data:
-  type: pandas.CSVDataset
-  filepath: data/02_intermediate/ana_data.csv
+#ana_data:
+#  type: pandas.CSVDataset
+#  filepath: data/02_intermediate/ana_data.csv
 
-X_train:
-  type: pandas.CSVDataset
-  filepath: data/05_model_input/X_train.csv
+#X_train:
+#  type: pandas.CSVDataset
+#  filepath: data/05_model_input/X_train.csv
 
-y_train:
-  type: pandas.CSVDataset
-  filepath: data/05_model_input/y_train.csv
+#y_train:
+#  type: pandas.CSVDataset
+#  filepath: data/05_model_input/y_train.csv
 
-X_test:
-  type: pandas.CSVDataset
-  filepath: data/05_model_input/X_test.csv
+#X_test:
+#  type: pandas.CSVDataset
+#  filepath: data/05_model_input/X_test.csv
 
-y_test:
-  type: pandas.CSVDataset
-  filepath: data/05_model_input/y_test.csv
+#y_test:
+#  type: pandas.CSVDataset
+#  filepath: data/05_model_input/y_test.csv
 
-best_columns:
-  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
-  dataset:
-    type: pickle.PickleDataset
-    filepath: data/06_models/best_cols.pkl
+#best_columns:
+#  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+#  dataset:
+#    type: pickle.PickleDataset
+#    filepath: data/06_models/best_cols.pkl
 
 # EXEMPLE DATA CATALOG
-companies:
-  type: pandas.CSVDataset
-  filepath: data/01_raw/companies.csv
+#companies:
+#  type: pandas.CSVDataset
+#  filepath: data/01_raw/companies.csv
 
-reviews:
-  type: pandas.CSVDataset
-  filepath: data/01_raw/reviews.csv
+#reviews:
+#  type: pandas.CSVDataset
+#  filepath: data/01_raw/reviews.csv
 
-shuttles:
-  type: pandas.ExcelDataset
-  filepath: data/01_raw/shuttles.xlsx
-  load_args:
-    engine: openpyxl
+#shuttles:
+#  type: pandas.ExcelDataset
+#  filepath: data/01_raw/shuttles.xlsx
+#  load_args:
+#    engine: openpyxl
 
-preprocessed_companies:
-  type: pandas.ParquetDataset
-  filepath: data/02_intermediate/preprocessed_companies.parquet
+#preprocessed_companies:
+#  type: pandas.ParquetDataset
+#  filepath: data/02_intermediate/preprocessed_companies.parquet
 
-preprocessed_shuttles:
-  type: pandas.ParquetDataset
-  filepath: data/02_intermediate/preprocessed_shuttles.parquet
+#preprocessed_shuttles:
+#  type: pandas.ParquetDataset
+#  filepath: data/02_intermediate/preprocessed_shuttles.parquet
 
-model_input_table:
-  type: pandas.ParquetDataset
-  filepath: data/03_primary/model_input_table.parquet
+#model_input_table:
+#  type: pandas.ParquetDataset
+#  filepath: data/03_primary/model_input_table.parquet
 
-regressor:
-  type: pickle.PickleDataset
-  filepath: data/06_models/regressor.pickle
-  versioned: true
+#regressor:
+#  type: pickle.PickleDataset
+#  filepath: data/06_models/regressor.pickle
+#  versioned: true
 
-shuttle_passenger_capacity_plot_exp:
-  type: plotly.PlotlyDataset
-  filepath: data/08_reporting/shuttle_passenger_capacity_plot_exp.json
-  versioned: true
-  plotly_args:
-    type: bar
-    fig:
-      x: shuttle_type
-      y: passenger_capacity
-      orientation: h
-    layout:
-      xaxis_title: Shuttles
-      yaxis_title: Average passenger capacity
-      title: Shuttle Passenger capacity
+#shuttle_passenger_capacity_plot_exp:
+#  type: plotly.PlotlyDataset
+#  filepath: data/08_reporting/shuttle_passenger_capacity_plot_exp.json
+#  versioned: true
+#  plotly_args:
+#    type: bar
+#    fig:
+#      x: shuttle_type
+#      y: passenger_capacity
+#      orientation: h
+#    layout:
+#      xaxis_title: Shuttles
+#      yaxis_title: Average passenger capacity
+#      title: Shuttle Passenger capacity
 
-shuttle_passenger_capacity_plot_go:
-  type: plotly.JSONDataset
-  filepath: data/08_reporting/shuttle_passenger_capacity_plot_go.json
-  versioned: true
+#shuttle_passenger_capacity_plot_go:
+#  type: plotly.JSONDataset
+#  filepath: data/08_reporting/shuttle_passenger_capacity_plot_go.json
+#  versioned: true
 
-dummy_confusion_matrix:
-  type: matplotlib.MatplotlibWriter
-  filepath: data/08_reporting/dummy_confusion_matrix.png
-  versioned: true
+#dummy_confusion_matrix:
+#  type: matplotlib.MatplotlibWriter
+#  filepath: data/08_reporting/dummy_confusion_matrix.png
+#  versioned: true
