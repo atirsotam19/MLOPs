@@ -71,7 +71,7 @@ from kedro.pipeline import Pipeline, pipeline
 
 from mlops_project.pipelines import (
     _00_data_cleaning as data_cleaning_pipeline,
-#   _01_data_unit_tests as data_tests,
+    _01_data_unit_tests as data_tests,
 #   _02_data_ingestion as data_ingestion,
 #   _03_data_split as split_data,
 #   _04_preprocessing_train as preprocess_train,
@@ -82,7 +82,7 @@ from mlops_project.pipelines import (
 def register_pipelines() -> Dict[str, Pipeline]:
     return {
         "data_cleaning": data_cleaning_pipeline.create_pipeline(),
-        #"data_unit_tests": data_tests.create_pipeline(),
+        "data_unit_tests": data_tests.create_pipeline(),
         #"data_ingestion": data_ingestion.create_pipeline(),
         #"data_split": split_data.create_pipeline(),
         #"preprocess_train": preprocess_train.create_pipeline(),
