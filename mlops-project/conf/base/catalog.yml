@@ -136,6 +136,12 @@ output_plot:
     type: matplotlib.MatplotlibWriter
     filepath: data/08_reporting/shap_plot.png
 
+champion_model:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: pickle.PickleDataset
+    filepath: data/06_models/champion_model.pkl
+
 # EXEMPLE DATA CATALOG
 #companies:
 #  type: pandas.CSVDataset
