@@ -10,7 +10,18 @@ baseline_model_params:
   max_depth: 5
   max_features: 20
   random_state: 13
-feature_columns: ["col1", "col2", "col3"]  
+feature_columns:
+  - no_of_dependents
+  - self_employed
+  - income_annum
+  - loan_amount
+  - loan_term
+  - cibil_score
+  - residential_assets_value
+  - commercial_assets_value
+  - luxury_assets_value
+  - bank_asset_value
+  - graduate 
 psi_bins: 10
 output_dir: "data/08_reporting"
 production_model_path: data/06_models/production_model.pkl

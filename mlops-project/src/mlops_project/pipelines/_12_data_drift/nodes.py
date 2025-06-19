@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 
 def calculate_psi_for_all_features(current: pd.DataFrame, reference: pd.DataFrame, features: list[str], bins=10) -> pd.DataFrame:
-    """Calculate PSI for all features, similar to previous node but parameterized."""
+    """Calculate PSI for all features."""
     def psi_feature(curr, ref, feature, bins):
         ref_values = ref[feature]
         bins = np.linspace(ref_values.min(), ref_values.max(), bins + 1)
@@ -16,6 +16,11 @@ def calculate_psi_for_all_features(current: pd.DataFrame, reference: pd.DataFram
 
     psi_vals = {f: psi_feature(current, reference, f, bins) for f in features}
     return pd.DataFrame.from_dict(psi_vals, orient='index', columns=['PSI']).sort_values('PSI', ascending=False)
+
+def compute_psi(reference: pd.DataFrame, current: pd.DataFrame, features: list[str], bins: int = 10) -> pd.DataFrame:
+    """Node to compute PSI given reference and current datasets."""
+    psi_df = calculate_psi_for_all_features(current=current, reference=reference, features=features, bins=bins)
+    return psi_df
 
 def plot_psi_bar(psi_df: pd.DataFrame, output_dir: str) -> None:
     plt.figure(figsize=(10, 6))

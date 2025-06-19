@@ -64,14 +64,6 @@ ana_data:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/ana_data.csv
 
-current_loans_encoded:
-  type: pandas.CSVDataset
-  filepath: data/02_intermediate/current_loans_encoded.csv
-
-reference_loans_encoded:
-  type: pandas.CSVDataset
-  filepath: data/02_intermediate/reference_loans_encoded.csv
-
 preprocessed_train_data:
   type: pandas.CSVDataset
   filepath: data/03_primary/preprocessed_train_data.csv
@@ -172,11 +164,11 @@ selected_features:
 
 current_loans_encoded:
   type: pandas.ParquetDataset
-  filepath: data/05_model_input/current_loans_encoded.parquet
+  filepath: data/02_intermediate/current_loans_encoded.csv
 
 reference_loans_encoded:
   type: pandas.ParquetDataset
-  filepath: data/05_model_input/reference_loans_encoded.parquet
+  filepath: data/02_intermediate/reference_loans_encoded.csv
 
 champion_model:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
