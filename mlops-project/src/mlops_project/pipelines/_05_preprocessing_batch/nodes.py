@@ -89,6 +89,9 @@ def feature_engineer(data: pd.DataFrame) -> pd.DataFrame:
         (df["cibil_score"] < 500) | (df["debt_to_income_ratio"] > 2.5)
     ).astype(int)
 
+    # Drop datetime column
+    df.drop(columns=['datetime'], inplace=True)
+
     logger.info("Feature engineering completed.")
 
     return df
