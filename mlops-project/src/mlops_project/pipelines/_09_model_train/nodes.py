@@ -117,6 +117,8 @@ def model_train(X_train: pd.DataFrame,
     # calculate shap values. This is what we will plot.
     # shap_values[:,:,1] -> since it is a classification problem, I will use SHAP for explaining the outcome of class 1.
     # you can do the same for the class 0 just by using shap_values[:,:,0]
-    shap.summary_plot(shap_values[:,:,1], X_train,feature_names=X_train.columns, show=False)
+    #shap.summary_plot(shap_values[:,:,1], X_train,feature_names=X_train.columns, show=False)    ERRO???
+    shap.summary_plot(shap_values, X_train, feature_names=X_train.columns, show=False)
+
 
     return model, X_train.columns, results_dict, plt, results_dict
