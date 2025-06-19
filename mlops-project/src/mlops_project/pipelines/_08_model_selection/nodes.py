@@ -83,6 +83,8 @@ def model_selection(X_train: pd.DataFrame,
     best_model_name = max(initial_results, key=initial_results.get)
     best_model = models_dict[best_model_name]
 
+    ##### HYPERPARAMETER TUNING WITH GRIDSEARCH #####
+
     logger.info(f"Best model is {best_model_name} with score {initial_results[best_model_name]}")
     logger.info('Starting second step of model selection : Hyperparameter tuning')
 
@@ -103,3 +105,61 @@ def model_selection(X_train: pd.DataFrame,
     else:
         logger.info(f"Champion model is still {champion_dict['regressor']} with score: {champion_dict['test_score']} vs {pred_score} ")
         return champion_model
+    
+    #############
+
+    ##### HYPERPARAMETER TUNING USING OPTUNA #####
+
+    # logger.info(f"Best model is {best_model_name} with score {initial_results[best_model_name]}")
+    # logger.info('Starting second step of model selection : Hyperparameter tuning with Optuna')
+
+    # # Define the search space for Optuna based on your parameters
+    # param_space = parameters['hyperparameters'][best_model_name]
+
+    # def objective(trial):
+    #     # Sample hyperparameters from Optuna trial
+    #     params = {}
+
+    #     for param_name, param_info in param_space.items():
+    #         if param_info['type'] == 'float':
+    #             if param_info.get('log', False):
+    #                 params[param_name] = trial.suggest_float(param_name, param_info['low'], param_info['high'], log=True)
+    #             else:
+    #                 params[param_name] = trial.suggest_float(param_name, param_info['low'], param_info['high'])
+    #         elif param_info['type'] == 'int':
+    #             params[param_name] = trial.suggest_int(param_name, param_info['low'], param_info['high'])
+    #         elif param_info['type'] == 'categorical':
+    #             params[param_name] = trial.suggest_categorical(param_name, param_info['values'])
+    #         else:
+    #             # fallback: use first value or raise error
+    #             params[param_name] = param_info['values'][0]
+
+    #     # Create a new model instance with sampled params
+    #     model_class = type(best_model)  # get class type of best_model
+    #     model = model_class(**params)
+        
+    #     y_train_ravel = np.ravel(y_train)
+    #     # Cross-validate to estimate accuracy
+    #     scores = cross_val_score(model, X_train, y_train_ravel, cv=2, scoring='accuracy', n_jobs=-1)
+    #     return scores.mean()
+
+    # study = optuna.create_study(direction='maximize')
+    # study.optimize(objective, n_trials=20)  
+
+    # best_params = study.best_params
+    # logger.info(f"Best hyperparameters found by Optuna: {best_params}")
+
+    # # Train final model with best hyperparameters on full training data
+    # best_model = type(best_model)(**best_params)
+    # best_model.fit(X_train, np.ravel(y_train))
+
+    # # Evaluate on test set
+    # pred_score = accuracy_score(y_test, best_model.predict(X_test))
+
+    # # Compare with champion model
+    # if champion_dict['test_score'] < pred_score:
+    #     logger.info(f"New champion model is {best_model_name} with score: {pred_score} vs {champion_dict['test_score']} ")
+    #     return best_model
+    # else:
+    #     logger.info(f"Champion model is still {champion_dict['regressor']} with score: {champion_dict['test_score']} vs {pred_score} ")
+    #     return champion_model

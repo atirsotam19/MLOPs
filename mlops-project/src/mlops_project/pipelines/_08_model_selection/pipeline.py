@@ -16,7 +16,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 inputs=["X_train","X_test","y_train","y_test",
                         "production_model_metrics",
                         "production_model",
-                        "parameters"],
+                        "parameters_grid"],
                 outputs="champion_model",
                 name="model_selection",
             ),
