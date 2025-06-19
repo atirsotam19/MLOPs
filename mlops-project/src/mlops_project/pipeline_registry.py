@@ -79,7 +79,7 @@ from mlops_project.pipelines import (
     _06_split_train_pipeline as split_train,
     _07_feature_selection as feature_selection_pipeline,
     _08_model_selection as model_selection_pipeline,
-    #_09_model_train as model_train_pipeline,
+    _09_model_train as model_train_pipeline,
     #_10_model_predict as model_predict_pipeline,
     #_11_data_drif as data_drift_pipeline,
 )
@@ -95,7 +95,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "data_split_train": split_train.create_pipeline(),
         "feature_selection": feature_selection_pipeline.create_pipeline(),
         "model_selection": model_selection_pipeline.create_pipeline(),
-        #"model_train": model_train_pipeline.create_pipeline(),
+        "model_train": model_train_pipeline.create_pipeline(),
         #"model_predict": model_predict_pipeline.create_pipeline(),
         #"data_drift": data_drift_pipeline.create_pipeline(),
 

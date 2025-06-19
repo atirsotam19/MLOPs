@@ -12,8 +12,9 @@ import warnings
 warnings.filterwarnings("ignore", category=Warning)
 
 
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
 
@@ -49,13 +50,15 @@ def model_selection(X_train: pd.DataFrame,
 
     Returns:
     --
-        models (dict): Dictionary of trained models.
-        scores (pd.DataFrame): Dataframe of model scores.
+        sklearn.base.BaseEstimator:
+            The selected model (new champion if better than current one, otherwise the existing champion model).
     """
    
     models_dict = {
         'LogisticRegression': LogisticRegression(),
+        'GaussianNB': GaussianNB(),
         'RandomForestClassifier': RandomForestClassifier(),
+        'GradientBoostingClassifier': GradientBoostingClassifier()
     }
 
     initial_results = {}   
