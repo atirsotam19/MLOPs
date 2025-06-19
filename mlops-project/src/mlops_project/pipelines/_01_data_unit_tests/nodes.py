@@ -183,7 +183,7 @@ def test_data(df):
             "column": "loan_amount",
             "min_value": q_low_loan_amount,          # 1% percentile
             "max_value": q_high_loan_amount,         # 99% percentile
-            "mostly": 0.99
+            "mostly": 0.98
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_loan_amount)
@@ -209,7 +209,7 @@ def test_data(df):
             "column": "residential_assets_value",
             "min_value": q_low_residential,        # 1% percentile
             "max_value": q_high_residential,       # 99% percentile
-            "mostly": 0.99  
+            "mostly": 0.98  
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_res_assets)
@@ -235,7 +235,7 @@ def test_data(df):
             "column": "commercial_assets_value",
             "min_value": q_low_commercial,   # 1% percentile
             "max_value": q_high_commercial,  # 99% percentile
-            "mostly": 0.99           
+            "mostly": 0.98           
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_comm_assets)
@@ -261,7 +261,7 @@ def test_data(df):
             "column": "luxury_assets_value",
             "min_value": q_low_luxury,   # 1% percentile
             "max_value": q_high_luxury,  # 99% percentile
-            "mostly": 0.99    
+            "mostly": 0.98    
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_luxury_assets)
@@ -270,8 +270,8 @@ def test_data(df):
         expectation_type="expect_column_mean_to_be_between",
         kwargs={
             "column": "luxury_assets_value",
-            "min_value": 1_470_679,     # mean - 1.5 * std
-            "max_value": 28_781_941,    # mean + 1.5 * std
+            "min_value": 1470679,     # mean - 1.5 * std
+            "max_value": 28781941,    # mean + 1.5 * std
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_luxury_assets_mean)
@@ -287,7 +287,7 @@ def test_data(df):
             "column": "bank_asset_value",
             "min_value": q_low_bank,    # 1% percentil
             "max_value": q_high_bank,   # 99% percentil
-            "mostly": 0.99,
+            "mostly": 0.98
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_bank_asset)
