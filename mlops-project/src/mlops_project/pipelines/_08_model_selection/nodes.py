@@ -74,7 +74,7 @@ def model_selection(X_train: pd.DataFrame,
 
     for model_name, model in models_dict.items():
         with mlflow.start_run(experiment_id=experiment_id,nested=True):
-            #mlflow.sklearn.autolog(log_model_signatures=True, log_input_examples=True)
+            mlflow.sklearn.autolog(log_model_signatures=True, log_input_examples=True)
             y_train = np.ravel(y_train)
             model.fit(X_train, y_train)
             initial_results[model_name] = model.score(X_test, y_test)
