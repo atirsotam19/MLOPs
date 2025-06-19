@@ -158,6 +158,25 @@ psi_bar_plot:
     type: matplotlib.MatplotlibWriter
     filepath: data/08_reporting/psi_bar_plot.png
 
+trained_model:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: pickle.PickleDataset
+    filepath: data/06_models/production_model.pkl
+
+selected_features:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: pickle.PickleDataset
+    filepath: data/06_models/production_cols.pkl
+
+current_loans_encoded:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/current_loans_encoded.parquet
+
+reference_loans_encoded:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/reference_loans_encoded.parquet
 
 champion_model:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset

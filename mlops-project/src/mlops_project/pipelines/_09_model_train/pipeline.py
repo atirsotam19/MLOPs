@@ -15,7 +15,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 func=model_train,
                 inputs=["X_train","X_test","y_train","y_test",
                         "parameters","best_columns"],
-                outputs=["production_model","production_columns" ,"production_model_metrics","output_plot", "results_dict@model_metrics"],
+                outputs=["production_model","production_columns" ,"production_model_metrics","output_plot", "model_metrics"],
                 name="train",
             ),
         ]

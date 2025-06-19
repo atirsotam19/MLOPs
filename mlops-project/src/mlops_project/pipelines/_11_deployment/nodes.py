@@ -1,15 +1,18 @@
-import pickle
-import json
-from typing import Dict, List
+# pipelines/deployment/nodes.py
 
-def save_production_model(model, output_path: str):
-    with open(output_path, 'wb') as f:
-        pickle.dump(model, f)
+def save_production_model(model, path):
+    import joblib
+    joblib.dump(model, path)
+    return model  # 🔁 Return value so Kedro can track it
 
-def save_production_columns(columns: List[str], output_path: str):
-    with open(output_path, 'wb') as f:
+def save_production_columns(columns, path):
+    import pickle
+    with open(path, "wb") as f:
         pickle.dump(columns, f)
+    return columns
 
-def save_production_metrics(metrics: Dict, output_path: str):
-    with open(output_path, 'w') as f:
+def save_production_metrics(metrics, path):
+    import json
+    with open(path, "w") as f:
         json.dump(metrics, f)
+    return metrics

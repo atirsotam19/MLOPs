@@ -7,20 +7,21 @@ def create_pipeline(**kwargs) -> Pipeline:
             node(
                 func=save_production_model,
                 inputs=["trained_model", "params:production_model_path"],
-                outputs="production_model",
+                outputs="production_model",  # <-- Returned from the function
                 name="save_production_model_node"
             ),
             node(
                 func=save_production_columns,
                 inputs=["selected_features", "params:production_columns_path"],
-                outputs="production_columns",
+                outputs="production_columns",  # <-- Returned from the function
                 name="save_production_columns_node"
             ),
             node(
                 func=save_production_metrics,
                 inputs=["model_metrics", "params:production_metrics_path"],
-                outputs="production_model_metrics",
+                outputs="production_model_metrics",  # <-- Returned from the function
                 name="save_production_metrics_node"
             ),
         ]
     )
+

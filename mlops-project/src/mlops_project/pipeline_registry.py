@@ -97,8 +97,8 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "feature_selection": feature_selection_pipeline.create_pipeline(),
         "model_selection": model_selection_pipeline.create_pipeline(),
         "model_train": model_train_pipeline.create_pipeline(),
-        "data_drift": data_drift_pipeline.create_pipeline(),
         "deployment": deployment_pipeline.create_pipeline(),
+        "data_drift": data_drift_pipeline.create_pipeline(),
         #"model_predict": model_predict_pipeline.create_pipeline(),
         
 
