@@ -119,4 +119,4 @@ def model_train(X_train: pd.DataFrame,
     # you can do the same for the class 0 just by using shap_values[:,:,0]
     shap.summary_plot(shap_values[:,:,1], X_train,feature_names=X_train.columns, show=False)
 
-    return model, X_train.columns, results_dict, plt
+    return model, X_train.columns, results_dict, plt, results_dict
