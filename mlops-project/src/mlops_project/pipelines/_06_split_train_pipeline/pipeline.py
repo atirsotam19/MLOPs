@@ -15,7 +15,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             node(
                 func= split_data,
                 inputs=["preprocessed_train_data","parameters"],
-                outputs= ["X_train","X_test","y_train","y_test","best_columns"],
+                outputs= ["X_train","X_test","y_train","y_test","train_columns"],
                 name="split",
             ),
         ]

@@ -112,6 +112,18 @@ production_columns:
     type: pickle.PickleDataset
     filepath: data/06_models/production_cols.pkl
 
+final_columns:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: pickle.PickleDataset
+    filepath: data/06_models/final_cols.pkl
+
+train_columns:
+ type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+ dataset:
+   type: pickle.PickleDataset
+   filepath: data/06_models/train_cols.pkl
+
 best_columns:
  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
  dataset:
@@ -123,6 +135,18 @@ production_model:
   dataset:
     type: pickle.PickleDataset
     filepath: data/06_models/production_model.pkl
+
+final_model:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: pickle.PickleDataset
+    filepath: data/06_models/final_model.pkl
+
+final_model_metrics:
+  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+  dataset:
+    type: json.JSONDataset
+    filepath: data/08_reporting/final_model_metrics.json
 
 production_model_metrics:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
