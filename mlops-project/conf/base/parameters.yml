@@ -2,3 +2,4 @@ target_column: 'loan_approved'
 test_fraction: 0.3
 random_state: 13
 to_feature_store: True
+feature_selection: "rfe"
