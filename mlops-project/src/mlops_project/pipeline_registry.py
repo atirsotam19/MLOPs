@@ -81,7 +81,7 @@ from mlops_project.pipelines import (
     _08_model_selection as model_selection_pipeline,
     _09_model_train as model_train_pipeline,
     #_10_model_predict as model_predict_pipeline,
-    #_11_deployment as deployment_pipeline,
+    _11_deployment as deployment_pipeline,
     _12_data_drift as data_drift_pipeline
 )
 
@@ -100,7 +100,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "data_drift": data_drift_pipeline.create_pipeline(),
         "deployment": deployment_pipeline.create_pipeline(),
         #"model_predict": model_predict_pipeline.create_pipeline(),
-        #"data_drift": data_drift_pipeline.create_pipeline(),
+        
 
         # Optional combo pipelines
         #"full_training_pipeline": preprocess_train.create_pipeline() + split_train.create_pipeline(),

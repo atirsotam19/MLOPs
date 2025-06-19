@@ -1,7 +1,7 @@
 from kedro.pipeline import Pipeline, node
 from .nodes import save_production_model, save_production_columns, save_production_metrics
 
-def create_deployment_pipeline(**kwargs) -> Pipeline:
+def create_pipeline(**kwargs) -> Pipeline:
     return Pipeline(
         [
             node(
