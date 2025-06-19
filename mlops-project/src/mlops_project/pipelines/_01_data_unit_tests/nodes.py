@@ -85,9 +85,10 @@ def test_data(df):
         logger.info("Data Source already exists.")
         datasource = context.datasources[datasource_name]
 
-    suite_loans = context.add_or_update_expectation_suite(expectation_suite_name="Loans")
-    
-    # OUR EXPECTATIONS (I ALREADY DID ONE FOR YOU, PLEASE ADD YOURS)
+    suite_loans = context.add_or_update_expectation_suite(expectation_suite_name="loans")
+
+# EXPECTATIONS
+
 # Category Expectation
 
 # Education Expectation
@@ -156,8 +157,8 @@ def test_data(df):
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "income_annum",
-            "min_value": 300000.0,  # 1% percentil
-            "max_value": 9800000.0,  # 99% percentil
+            "min_value": 200000.0,
+            "max_value": 10000000.0,  
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_income_annum)
@@ -172,12 +173,17 @@ def test_data(df):
     suite_loans.add_expectation(expectation_configuration=expectation_income_mean)
     
 # Loan Amount
+
+    q_low_loan_amount = df["loan_amount"].quantile(0.01)
+    q_high_loan_amount = df["loan_amount"].quantile(0.99)
+
     expectation_loan_amount = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "loan_amount",
-            "min_value": 700000.0,    #  1% percentil
-            "max_value": 35700000.0,   # 99% percentil
+            "min_value": q_low_loan_amount,          # 1% percentile
+            "max_value": q_high_loan_amount,         # 99% percentile
+            "mostly": 0.99
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_loan_amount)
@@ -193,12 +199,17 @@ def test_data(df):
     suite_loans.add_expectation(expectation_configuration=expectation_loan_mean)
     
 # Residential Assets Value
+
+    q_low_residential = df["residential_assets_value"].quantile(0.01)
+    q_high_residential = df["residential_assets_value"].quantile(0.99)
+
     expectation_res_assets = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "residential_assets_value",
-            "min_value": 0.0,           # 1% percentil
-            "max_value": 25400000.0,    # 99% percentil
+            "min_value": q_low_residential,        # 1% percentile
+            "max_value": q_high_residential,       # 99% percentile
+            "mostly": 0.99  
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_res_assets)
@@ -214,12 +225,17 @@ def test_data(df):
     suite_loans.add_expectation(expectation_configuration=expectation_res_assets_mean)
 
 # Commercial Assets Value
+
+    q_low_commercial = df["commercial_assets_value"].quantile(0.01)
+    q_high_commercial = df["commercial_assets_value"].quantile(0.99)
+
     expectation_comm_assets = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "commercial_assets_value",
-            "min_value": 0.0,            # 1% percentil
-            "max_value": 16732000.0,     # 99% percentil
+            "min_value": q_low_commercial,   # 1% percentile
+            "max_value": q_high_commercial,  # 99% percentile
+            "mostly": 0.99           
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_comm_assets)
@@ -235,12 +251,17 @@ def test_data(df):
     suite_loans.add_expectation(expectation_configuration=expectation_comm_assets_mean)
 
 # Luxury Assets Value
+
+    q_low_luxury = df["luxury_assets_value"].quantile(0.01)
+    q_high_luxury = df["luxury_assets_value"].quantile(0.99)
+
     expectation_luxury_assets = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "luxury_assets_value",
-            "min_value": 700000.0,      # 1% percentil
-            "max_value": 36032000.0,    # 99% percentil
+            "min_value": q_low_luxury,   # 1% percentile
+            "max_value": q_high_luxury,  # 99% percentile
+            "mostly": 0.99    
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_luxury_assets)
@@ -256,12 +277,17 @@ def test_data(df):
     suite_loans.add_expectation(expectation_configuration=expectation_luxury_assets_mean)
     
 # Bank Asset Value
+
+    q_low_bank = df["bank_asset_value"].quantile(0.01)
+    q_high_bank = df["bank_asset_value"].quantile(0.99)
+
     expectation_bank_asset = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "bank_asset_value",
-            "min_value": 200000.0,   # 1% percentil
-            "max_value": 13100000.0, # 99% percentil
+            "min_value": q_low_bank,    # 1% percentil
+            "max_value": q_high_bank,   # 99% percentil
+            "mostly": 0.99,
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_bank_asset)
@@ -281,8 +307,8 @@ def test_data(df):
         expectation_type="expect_column_values_to_be_between",
         kwargs={
             "column": "cibil_score",
-            "min_value": 304.00,     # 1% percentil
-            "max_value": 894.32,     # 99% percentil
+            "min_value": 300.00,     
+            "max_value": 900.00,     
         },
     )
     suite_loans.add_expectation(expectation_configuration=expectation_cibil_score)
@@ -310,12 +336,12 @@ def test_data(df):
     batch_request = data_asset.build_batch_request(dataframe= df)
 
     checkpoint = gx.checkpoint.SimpleCheckpoint(
-        name="checkpoint_marital",
+        name="checkpoint_loans",
         data_context=context,
         validations=[
             {
                 "batch_request": batch_request,
-                "expectation_suite_name": "Loans",
+                "expectation_suite_name": "loans",
             },
         ],
     )
