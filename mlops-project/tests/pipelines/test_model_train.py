@@ -25,6 +25,10 @@ def sample_data():
     best_cols = ["feat1", "feat2", "feat3"]
     return X_train, X_test, y_train, y_test, best_cols
 
+class DummyExperiment:
+    def __init__(self, experiment_id):
+        self.experiment_id = experiment_id
+
 @patch("builtins.open")
 @patch("pickle.load", side_effect=Exception("no model"))
 @patch("mlflow.start_run")
@@ -49,7 +53,7 @@ def test_model_train_runs(
     mock_model.predict.side_effect = lambda X: np.random.randint(0, 2, size=len(X))
     mock_shap_explainer.return_value.return_value = np.random.randn(len(X_train), len(X_train.columns))
 
-    mock_get_exp.return_value = MagicMock(experiment_id="1234")
+    mock_get_exp.return_value = DummyExperiment("14")
 
     params = {
         "baseline_model_params": {"n_estimators": 10},
