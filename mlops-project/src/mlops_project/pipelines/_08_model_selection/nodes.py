@@ -141,7 +141,9 @@ def model_selection(X_train: pd.DataFrame,
             scores = cross_val_score(model, X_train, y_train_ravel, cv=2, scoring='accuracy', n_jobs=-1)
             mean_score = scores.mean()
             mlflow.log_metric("mean_cv_accuracy", mean_score)
-        
+
+        mlflow.end_run()
+
         return mean_score
 
     study = optuna.create_study(direction='maximize')

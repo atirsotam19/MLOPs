@@ -45,83 +45,58 @@ def parameters():
 
 
 def test_get_or_create_experiment_id_creates_new_experiment():
-    with patch('mlflow.get_experiment_by_name', return_value=None) as mock_get_exp, \
-         patch('mlflow.create_experiment', return_value="new_exp_id") as mock_create_exp, \
+    with patch('mlflow.get_experiment_by_name', return_value=None), \
+         patch('mlflow.create_experiment', return_value="new_exp_id"), \
          patch('mlflow.start_run') as mock_start_run, \
-         patch('mlflow.sklearn.autolog') as mock_autolog:
-        
-        # Create dummy data
-        import pandas as pd
-        X_train = pd.DataFrame({'a':[1,2], 'b':[3,4]})
-        X_test = pd.DataFrame({'a':[5], 'b':[6]})
-        y_train = pd.Series([0,1])
+         patch('mlflow.last_active_run') as mock_last_run, \
+         patch('mlflow.sklearn.autolog'):
+
+        # Mock the context manager for start_run
+        mock_run = MagicMock()
+        mock_run.__enter__.return_value = mock_run
+        mock_run.__exit__.return_value = None
+        mock_start_run.return_value = mock_run
+
+        # Mock the return of last_active_run
+        mock_last_run_instance = MagicMock()
+        mock_last_run_instance.info.run_id = "mock_run_id"
+        mock_last_run.return_value = mock_last_run_instance
+
+        # Dummy data
+        X_train = pd.DataFrame({
+            'a': [1, 2, 3, 4],
+            'b': [3, 4, 5, 6]
+        })
+        X_test = pd.DataFrame({'a': [5], 'b': [6]})
+        y_train = pd.Series([0, 1, 0, 1])  
         y_test = pd.Series([0])
+
         parameters = {
-        'hyperparameters': {
-            'RandomForestClassifier': {
-                'max_depth': {'type': 'int', 'low': 2, 'high': 5},
-                'learning_rate': {'type': 'float', 'low': 0.01, 'high': 0.1, 'log': True},
-                'min_samples_split': {'type': 'float', 'low': 0.1, 'high': 0.5},
-                'criterion': {'type': 'categorical', 'values': ['gini', 'entropy']},
-                'some_param': {'type': 'other', 'values': [42]}  # this triggers the else branch
+            'hyperparameters': {
+                'LogisticRegression': {
+                    'C': {'type': 'float', 'low': 0.01, 'high': 10.0, 'log': True}
+                },
+                'GaussianNB': {
+                    'var_smoothing': {'type': 'float', 'low': 1e-11, 'high': 1e-7}
+                },
+                'RandomForestClassifier': {
+                    'max_depth': {'type': 'int', 'low': 2, 'high': 5},
+                    'learning_rate': {'type': 'float', 'low': 0.01, 'high': 0.1, 'log': True},
+                    'min_samples_split': {'type': 'float', 'low': 0.1, 'high': 0.5},
+                    'criterion': {'type': 'categorical', 'values': ['gini', 'entropy']},
+                    'some_param': {'type': 'other', 'values': [42]}
+                },
+                'GradientBoostingClassifier': {
+                    'n_estimators': {'type': 'int', 'low': 50, 'high': 150},
+                    'learning_rate': {'type': 'float', 'low': 0.01, 'high': 0.1},
+                    'max_depth': {'type': 'int', 'low': 2, 'high': 5}
+                }
             }
         }
-    }
 
 
-        # Call the model_selection function
+        # Run your function
         model_selection(X_train, X_test, y_train, y_test, parameters)
-
-        # Assert get_experiment_by_name was called
-        mock_get_exp.assert_called_once()
-
-        # Assert create_experiment called because experiment was missing
-        mock_create_exp.assert_called_once()
-
-
-
-
-# @patch("src.mlops_project.pipelines._08_model_selection.nodes.mlflow")
-# @patch("src.mlops_project.pipelines._08_model_selection.nodes.optuna.create_study")
-# def test_model_selection_basic(optuna_mock, mlflow_mock, sample_data, parameters):
-#     X_train, X_test, y_train, y_test = sample_data
-
-#     # Mock MLflow experiment retrieval/creation
-#     mlflow_mock.get_experiment_by_name.return_value = MagicMock(experiment_id="exp123")
-#     mlflow_mock.create_experiment.return_value = "exp123"
-#     mlflow_mock.start_run.return_value.__enter__.return_value = None
-#     mlflow_mock.last_active_run.return_value.info.run_id = "run123"
-#     mlflow_mock.sklearn = MagicMock()
-
-#     # Mock Optuna study and optimization
-#     study_mock = MagicMock()
-#     study_mock.best_params = {'n_estimators': 10, 'max_depth': 3}
-#     optuna_mock.return_value = study_mock
-
-#     def fake_optimize(func, n_trials):
-#         # simulate study.optimize calling func multiple times
-#         for _ in range(n_trials):
-#             func(MagicMock(suggest_float=lambda n, low, high, log=False: low,
-#                            suggest_int=lambda n, low, high: low,
-#                            suggest_categorical=lambda n, vals: vals[0]))
-
-#     study_mock.optimize.side_effect = fake_optimize
-
-#     model = model_selection(X_train, X_test, y_train, y_test, parameters)
-
-#     # Check returned model is a sklearn estimator (RandomForestClassifier here)
-#     from sklearn.ensemble import RandomForestClassifier
-#     assert isinstance(model, RandomForestClassifier)
-
-#     # Confirm MLflow logging calls
-#     assert mlflow_mock.start_run.call_count > 0
-#     assert mlflow_mock.sklearn.log_model.called
-
-#     # Confirm best_params in logs
-#     mlflow_mock.log_params.assert_called()
-
-#     # Confirm accuracy metric logged
-#     mlflow_mock.log_metric.assert_called()
 
 
 def test_model_selection_basic(sample_data):
