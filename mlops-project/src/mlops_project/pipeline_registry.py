@@ -19,6 +19,23 @@ from mlops_project.pipelines import (
 )
 
 def register_pipelines() -> Dict[str, Pipeline]:
+    # Optional combo pipelines
+    full_training_pipeline = (
+        data_cleaning_pipeline.create_pipeline() +
+        data_tests.create_pipeline() +
+        data_ingestion.create_pipeline() +
+        split_data.create_pipeline() +
+        preprocess_train.create_pipeline() +
+        preprocessing_batch.create_pipeline() +
+        split_train.create_pipeline() +
+        feature_selection_pipeline.create_pipeline() +
+        model_selection_pipeline.create_pipeline()  +
+        model_train_pipeline.create_pipeline() +
+        model_predict_pipeline.create_pipeline() +
+        deployment_pipeline.create_pipeline() +
+        data_drift_pipeline.create_pipeline()
+    )
+
     return {
         "data_cleaning": data_cleaning_pipeline.create_pipeline(),
         "data_unit_tests": data_tests.create_pipeline(),
@@ -34,18 +51,6 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "deployment": deployment_pipeline.create_pipeline(),
         "data_drift": data_drift_pipeline.create_pipeline(),
 
-        # Optional combo pipelines
-        "full_training_pipeline": data_cleaning_pipeline.create_pipeline() +
-        data_tests.create_pipeline() +
-        data_ingestion.create_pipeline() +
-        split_data.create_pipeline() +
-        preprocess_train.create_pipeline() +
-        preprocessing_batch.create_pipeline() +
-        split_train.create_pipeline() +
-        feature_selection_pipeline.create_pipeline() +
-        model_selection_pipeline.create_pipeline()  +
-        model_train_pipeline.create_pipeline() +
-        model_predict_pipeline.create_pipeline() +
-        deployment_pipeline.create_pipeline() +
-        data_drift_pipeline.create_pipeline()
+        "full_training_pipeline": full_training_pipeline,
+        "__default__": full_training_pipeline,
     }
