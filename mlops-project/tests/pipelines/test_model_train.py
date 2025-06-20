@@ -1,86 +1,61 @@
 import pytest
-import pandas as pd
-import numpy as np
-import warnings
 from unittest.mock import patch, MagicMock
-
-warnings.filterwarnings("ignore", category=Warning)
-
-from src.mlops_project.pipelines._09_model_train.nodes import model_train
+import pandas as pd
+from src.mlops_project.pipelines._09_model_train.nodes import model_train  # adjust this import path if needed
 
 @pytest.fixture
 def sample_data():
     X_train = pd.DataFrame({
-        "feat1": [6, 8, 4, 3, 6],
-        "feat2": [1, 4, 5, 3, 6],
-        "feat3": [1, 2, 1, 4, 3],
+        "feat1": [0, 1, 0, 1],
+        "feat2": [1, 0, 1, 0],
+        "feat3": [0.5, 0.7, 0.1, 0.3]
     })
     X_test = pd.DataFrame({
-        "feat1": [2, 8],
-        "feat2": [1, 9],
-        "feat3": [3, 2],
+        "feat1": [1, 0],
+        "feat2": [0, 1],
+        "feat3": [0.6, 0.2]
     })
-    y_train = pd.Series([0, 1, 0, 1, 0])
+    y_train = pd.Series([0, 1, 0, 1])
     y_test = pd.Series([1, 0])
-    best_cols = ["feat1", "feat2", "feat3"]
-    return X_train, X_test, y_train, y_test, best_cols
-
-class DummyRun:
-    def __enter__(self):
-        return self
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        pass
-    def info(self):
-        return self
-    @property
-    def run_id(self):
-        return "dummy_run_id"
-
-class DummyExperiment:
-    def __init__(self, experiment_id):
-        self.experiment_id = experiment_id
-
-@patch("builtins.open")
-@patch("pickle.load", side_effect=Exception("no model"))
-@patch("src.mlops_project.pipelines._09_model_train.nodes.mlflow.start_run")
-@patch("src.mlops_project.pipelines._09_model_train.nodes.mlflow.get_experiment_by_name")
-@patch("yaml.load", return_value={"tracking": {"experiment": {"name": "test"}}})
-@patch("shap.TreeExplainer")
-@patch("shap.summary_plot")
-def test_model_train_runs(
-    mock_shap_plot,
-    mock_shap_explainer,
-    mock_yaml,
-    mock_get_exp,
-    mock_mlflow_start_run,
-    mock_pickle_load,
-    mock_open,
-    sample_data,
-):
-    X_train, X_test, y_train, y_test, best_cols = sample_data
-
-    # Mock do modelo
-    mock_model = MagicMock()
-    mock_model.fit.return_value = mock_model
-    mock_model.predict.side_effect = lambda X: np.random.randint(0, 2, size=len(X))
-    mock_shap_explainer.return_value.return_value = np.random.randn(len(X_train), len(X_train.columns))
-
-    # Força retorno do experimento com id fixo
-    mock_get_exp.return_value = DummyExperiment("14")
-
-    # Mock da start_run para devolver contexto DummyRun
-    mock_mlflow_start_run.return_value = DummyRun()
-
-    params = {
-        "baseline_model_params": {"n_estimators": 10},
-        "use_feature_selection": True
+    parameters = {
+        "baseline_model_params": {"n_estimators": 5, "random_state": 42},
+        "use_feature_selection": False
     }
+    best_columns = ["feat1", "feat2", "feat3"]
+    return X_train, X_test, y_train, y_test, parameters, best_columns
 
-    model, cols, metrics, plot, full_metrics = model_train(
-        X_train, X_test, y_train, y_test, params, best_cols
+@patch("mlflow.get_experiment_by_name")
+@patch("mlflow.start_run")
+@patch("mlflow.log_metric")
+@patch("mlflow.last_active_run")
+def test_model_train_basic(
+    mock_last_active_run, 
+    mock_log_metric, 
+    mock_start_run, 
+    mock_get_experiment_by_name, 
+    sample_data
+):
+    # Mock experiment returned by mlflow.get_experiment_by_name
+    mock_experiment = MagicMock()
+    mock_experiment.experiment_id = "12345"
+    mock_get_experiment_by_name.return_value = mock_experiment
+
+    # Mock mlflow run context manager
+    mock_run = MagicMock()
+    mock_run.info.run_id = "fake_run_id"
+    mock_start_run.return_value.__enter__.return_value = mock_run
+
+    # Mock mlflow.last_active_run to return the same mock run
+    mock_last_active_run.return_value = mock_run
+
+    X_train, X_test, y_train, y_test, parameters, best_columns = sample_data
+
+    model, columns, results_dict, plt_obj, results_dict_2 = model_train(
+        X_train, X_test, y_train, y_test, parameters, best_columns
     )
 
-    assert model is not None
-    assert isinstance(cols, pd.Index)
-    assert isinstance(metrics, dict)
-    assert "train_score" in metrics
+    # Simple assertions to verify outputs
+    assert "train_score" in results_dict
+    assert "test_score" in results_dict
+    assert len(columns) == len(best_columns)
+
