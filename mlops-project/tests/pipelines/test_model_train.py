@@ -55,8 +55,8 @@ def test_model_train_runs(
     mock_model.predict.side_effect = lambda X: np.random.randint(0, 2, size=len(X))
     mock_shap_explainer.return_value.return_value = np.random.randn(len(X_train), len(X_train.columns))
 
-    #mock_get_exp.return_value = DummyExperiment("14")
-    mock_get_exp.return_value = type("Exp", (), {"experiment_id": "14"})()
+    mock_get_exp.return_value = DummyExperiment("14")
+    #mock_get_exp.return_value = type("Exp", (), {"experiment_id": "14"})()
 
     params = {
         "baseline_model_params": {"n_estimators": 10},
