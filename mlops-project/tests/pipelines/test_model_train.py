@@ -18,6 +18,7 @@ def sample_data():
     X_test = pd.DataFrame({
         "feat1": [2, 8],
         "feat2": [1, 9],
+        "feat3": [3, 2],
     })
     y_train = pd.Series([0, 1, 0, 1, 0])
     y_test = pd.Series([1, 0])
