@@ -21,7 +21,8 @@ def sample_data():
     })
     y_train = pd.Series([0, 1, 0, 1, 0])
     y_test = pd.Series([1, 0])
-    return X_train, X_test, y_train, y_test
+    best_cols = ["feat1", "feat2", "feat3"]
+    return X_train, X_test, y_train, y_test, best_cols
 
 @patch("builtins.open")
 @patch("pickle.load", side_effect=Exception("no model"))
