@@ -27,14 +27,14 @@ def sample_data():
 
 from collections import UserDict
 
-class DummyExperiment(UserDict):
+class DummyExperiment:
     def __init__(self, experiment_id):
-        super().__init__({"experiment_id": experiment_id})
+        self.experiment_id = experiment_id
 
 @patch("builtins.open")
 @patch("pickle.load", side_effect=Exception("no model"))
 @patch("mlflow.start_run")
-@patch("mlflow.get_experiment_by_name")
+@patch("src.mlops_project.pipelines._09_model_train.nodes.mlflow.get_experiment_by_name")
 @patch("yaml.load", return_value={"tracking": {"experiment": {"name": "test"}}})
 @patch("shap.TreeExplainer")
 @patch("shap.summary_plot")
@@ -57,6 +57,7 @@ def test_model_train_runs(
 
     mock_get_exp.return_value = DummyExperiment("14")
     #mock_get_exp.return_value = type("Exp", (), {"experiment_id": "14"})()
+    
 
     params = {
         "baseline_model_params": {"n_estimators": 10},
