@@ -4,8 +4,8 @@ import numpy as np
 import tempfile
 
 from kedro.pipeline import Pipeline
-from mlops_project.pipelines._12_data_drift.nodes import compute_psi, plot_psi_bar
-from mlops_project.pipelines._12_data_drift.pipeline import create_pipeline
+from src.mlops_project.pipelines._12_data_drift.nodes import compute_psi, plot_psi_bar
+from src.mlops_project.pipelines._12_data_drift.pipeline import create_pipeline
 
 # Test cases for the data drift detection pipeline
 def test_compute_psi_no_drift():  
