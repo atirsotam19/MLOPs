@@ -109,8 +109,8 @@ great==0.2.0
 great-expectations==0.18.12
 greenlet==3.2.1
 griffe==1.7.3
-grpcio==1.73.0
-grpcio-status==1.73.0
+grpcio==1.51.3
+grpcio-status==1.51.3
 h11==0.16.0
 h2==4.2.0
 hopsworks==4.2.6
@@ -228,7 +228,7 @@ prefect==2.20.17
 prometheus-client==0.21.1
 propcache==0.3.1
 proto-plus==1.26.1
-protobuf==4.25.8
+protobuf>=4.25.4,<5.0.0
 puremagic==1.28
 py-cpuinfo==9.0.0
 py4j==0.10.9.7
