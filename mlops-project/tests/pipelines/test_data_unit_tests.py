@@ -1,7 +1,6 @@
 import pytest
 import pandas as pd
-from src.mlops_project.pipelines._01_data_unit_tests.nodes import test_data
-
+from src.mlops_project.pipelines._01_data_unit_tests.nodes import validate_data
 
 @pytest.fixture
 def valid_dataframe():
@@ -13,18 +12,18 @@ def valid_dataframe():
         "no_of_dependents": [1, 2, 3],
         "loan_term": [10, 12, 14],
         "income_annum": [500000, 1000000, 1500000],
-        "loan_amount": [100000, 200000, 300000],
+        "loan_amount": [1500000, 1600000, 1700000],
         "residential_assets_value": [200000, 300000, 250000],
         "commercial_assets_value": [50000, 100000, 150000],
-        "luxury_assets_value": [80000, 90000, 100000],
-        "bank_asset_value": [20000, 30000, 40000],
+        "luxury_assets_value": [1400000, 1500000, 1600000],
+        "bank_asset_value": [200500, 300000, 400000],
         "cibil_score": [700, 750, 800],
     })
 
 
 def test_data_expectations(valid_dataframe):
     """Test the `test_data` node runs without assertion errors."""
-    validation_df = test_data(valid_dataframe)
+    validation_df = validate_data(valid_dataframe)
 
     # Check if returned dataframe is not empty
     assert not validation_df.empty, "Validation results should not be empty."

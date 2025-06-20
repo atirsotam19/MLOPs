@@ -67,7 +67,7 @@ def get_validation_results(checkpoint_result):
     return df_validation
 
 
-def test_data(df):
+def validate_data(df):
     # Define project root (two levels up from nodes.py)
     project_root = Path(__file__).parents[4]
 
@@ -89,7 +89,7 @@ def test_data(df):
 
 # EXPECTATIONS
 
-# Category Expectation
+# Categorical Expectations
 
 # Education Expectation
     expectation_education = ExpectationConfiguration(
@@ -174,8 +174,8 @@ def test_data(df):
     
 # Loan Amount
 
-    q_low_loan_amount = df["loan_amount"].quantile(0.01)
-    q_high_loan_amount = df["loan_amount"].quantile(0.99)
+    q_low_loan_amount = 700000.0
+    q_high_loan_amount = 35700000.0
 
     expectation_loan_amount = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
@@ -200,8 +200,8 @@ def test_data(df):
     
 # Residential Assets Value
 
-    q_low_residential = df["residential_assets_value"].quantile(0.01)
-    q_high_residential = df["residential_assets_value"].quantile(0.99)
+    q_low_residential = 0.0
+    q_high_residential = 25400000.0
 
     expectation_res_assets = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
@@ -226,8 +226,8 @@ def test_data(df):
 
 # Commercial Assets Value
 
-    q_low_commercial = df["commercial_assets_value"].quantile(0.01)
-    q_high_commercial = df["commercial_assets_value"].quantile(0.99)
+    q_low_commercial = 0.0
+    q_high_commercial = 16732000.0
 
     expectation_comm_assets = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
@@ -252,8 +252,8 @@ def test_data(df):
 
 # Luxury Assets Value
 
-    q_low_luxury = df["luxury_assets_value"].quantile(0.01)
-    q_high_luxury = df["luxury_assets_value"].quantile(0.99)
+    q_low_luxury = 700000.0
+    q_high_luxury = 36032000.0
 
     expectation_luxury_assets = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
@@ -278,8 +278,8 @@ def test_data(df):
     
 # Bank Asset Value
 
-    q_low_bank = df["bank_asset_value"].quantile(0.01)
-    q_high_bank = df["bank_asset_value"].quantile(0.99)
+    q_low_bank = 200000.0
+    q_high_bank = 13100000.0
 
     expectation_bank_asset = ExpectationConfiguration(
         expectation_type="expect_column_values_to_be_between",
@@ -323,7 +323,6 @@ def test_data(df):
     )
     suite_loans.add_expectation(expectation_configuration=expectation_cibil_score_mean)
 
-    # EXPECTATIONS END HERE, DON'T CHANGE ANYTHING BELOW THIS LINE
     context.add_or_update_expectation_suite(expectation_suite=suite_loans)
 
     data_asset_name = "test"
