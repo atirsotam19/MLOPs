@@ -1,6 +1,6 @@
 import pytest
 import pandas as pd
-from pipelines.data_unit_tests.nodes import test_data
+from src.mlops_project.pipelines._01_data_unit_tests.nodes import test_data
 
 
 @pytest.fixture

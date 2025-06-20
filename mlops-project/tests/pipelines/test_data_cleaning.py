@@ -2,9 +2,7 @@ import pandas as pd
 import pytest
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../src")))
-
-from pipelines._00_data_cleaning.nodes import clean_data
+from src.mlops_project.pipelines._00_data_cleaning.nodes import clean_data
 
 @pytest.fixture
 def sample_raw_data():

@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from unittest.mock import patch, MagicMock
-from src.your_project_name.pipelines.data_engineering.nodes import ingestion, build_expectation_suite
+from src.mlops_project.pipelines._02_data_ingestion.nodes import ingestion, build_expectation_suite
 
 
 @pytest.fixture
