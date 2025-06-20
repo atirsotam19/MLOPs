@@ -5,12 +5,7 @@ import joblib
 import tempfile
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-
-from mlops_project.pipelines._11_deployment.nodes import (
-    save_production_model,
-    save_production_columns,
-    save_production_metrics,
-)
+from src.mlops_project.pipelines._11_deployment.pipeline import (save_production_model,save_production_columns,save_production_metrics,)
 
 # Test cases for the deployment nodes in the MLOps project
 def test_save_production_model():

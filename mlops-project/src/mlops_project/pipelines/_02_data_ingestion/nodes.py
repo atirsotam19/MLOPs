@@ -127,24 +127,24 @@ def build_expectation_suite(expectation_suite_name: str, feature_group: str, fea
         )
 
     # Target Expectations
-        if feature_group == 'target':
+    if feature_group == 'target':
     
-            expectation_suite_bank.add_expectation(
-                ExpectationConfiguration(
-                    expectation_type="expect_column_distinct_values_to_be_in_set",
-                    kwargs={
-                        "column": "loan_approved",
-                        "value_set": [0, 1],
-                    },
-                )
+        expectation_suite_bank.add_expectation(
+            ExpectationConfiguration(
+                expectation_type="expect_column_distinct_values_to_be_in_set",
+                kwargs={
+                    "column": "loan_approved",
+                    "value_set": [0, 1],
+                },
             )
-            # The target values should not be null
-            expectation_suite_bank.add_expectation(
-                ExpectationConfiguration(
-                    expectation_type="expect_column_values_to_not_be_null",
-                    kwargs={"column": "loan_approved"},
-                )
+        )
+        # The target values should not be null
+        expectation_suite_bank.add_expectation(
+            ExpectationConfiguration(
+                expectation_type="expect_column_values_to_not_be_null",
+                kwargs={"column": "loan_approved"},
             )
+        )
 
     return expectation_suite_bank
 
@@ -263,16 +263,56 @@ def ingestion(
     validation_expectation_suite_categorical = build_expectation_suite("categorical_expectations","categorical_features", features=categorical_features)
     validation_expectation_suite_target = build_expectation_suite("target_expectations","target")
 
-    numerical_feature_descriptions =[]
-    categorical_feature_descriptions =[]
-    target_feature_descriptions =[]
-    
+    numerical_feature_descriptions = [
+    {"name": "loan_id",
+     "description": "Unique identifier for the loan application."},
+    {"name": "datetime",
+     "description": "Datetime stamp of the application."},
+    {"name": "bank_asset_value",
+     "description": "Total value of the applicant's assets held in bank accounts, in monetary units."},
+    {"name": "cibil_score",
+     "description": "Credit score of the applicant, ranging from 300 to 900."},
+    {"name": "commercial_assets_value",
+     "description": "Total value of the applicant's commercial property assets, in monetary units."},
+    {"name": "income_annum",
+     "description": "Annual income of the applicant, in monetary units."},
+    {"name": "loan_amount",
+     "description": "Total loan amount requested by the applicant, in monetary units."},
+    {"name": "luxury_assets_value",
+     "description": "Estimated value of luxury assets owned by the applicant."},
+    {"name": "residential_assets_value",
+     "description": "Total value of residential properties owned by the applicant, in monetary units."}
+    ]
+
+    categorical_feature_descriptions = [
+    {"name": "loan_id",
+     "description": "Unique identifier for the loan application."},
+    {"name": "datetime",
+     "description": "Datetime stamp of the application."},
+    {"name": "graduate",
+     "description": "Indicates whether the applicant is a graduate (1) or not (0)."},
+    {"name": "loan_term",
+     "description": "Duration of the loan term in years, ranging typically from 2 to 20."},
+    {"name": "no_of_dependents",
+     "description": "Number of dependents the applicant has."},
+    {"name": "self_employed",
+     "description": "Indicates whether the applicant is self-employed (1) or not (0)."}
+    ]
+
+    target_feature_descriptions = [
+    {"name": "loan_id",
+     "description": "Unique identifier for the loan application."},
+    {"name": "datetime",
+     "description": "Datetime stamp of the application."},
+    {"name": "loan_approved",
+     "description": "Target variable indicating whether the loan was approved (1) or not (0)."}
+    ]
+
+
 
     df_numeric = df[["loan_id","datetime"] + numerical_features]
     df_categorical = df[["loan_id","datetime"] + categorical_features]
     df_target = df[["loan_id","datetime"] + [parameters["target_column"]]]
-
-
 
 
     if parameters["to_feature_store"]:
