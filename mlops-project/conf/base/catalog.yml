@@ -210,5 +210,16 @@ predict_describe:
     type: json.JSONDataset
     filepath: data/08_reporting/predict_describe.json
 
-parameters:
-  save_path: "data/08_reporting"
+_parameters: parameters.yml
+
+#confusion_matrix:
+#  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+#  dataset:
+#    type: matplotlib.MatplotlibWriter
+#    filepath: data/08_reporting/confusion_matrix.png
+
+#roc_curve:
+#  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
+#  dataset:
+#    type: matplotlib.MatplotlibWriter
+#   filepath: data/08_reporting/shap_plot.png
