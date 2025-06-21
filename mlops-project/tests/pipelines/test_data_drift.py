@@ -30,8 +30,8 @@ def test_compute_psi_with_drift():
         "feature2": np.random.normal(5, 1, 100),
     })
     current = pd.DataFrame({
-        "feature1": np.random.normal(3, 1, 100),
-        "feature2": np.random.normal(8, 1, 100),
+        "feature1": np.random.normal(5, 1, 100),
+        "feature2": np.random.normal(10, 1, 100),
     })
 
     features = ["feature1", "feature2"]
