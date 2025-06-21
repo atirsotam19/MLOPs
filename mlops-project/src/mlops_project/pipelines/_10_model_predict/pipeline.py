@@ -13,7 +13,7 @@ def create_pipeline(**kwargs) -> Pipeline:
         [
             node(
                 func=model_predict,
-                inputs=["preprocessed_batch_data","production_model","production_columns"],
+                inputs=["preprocessed_batch_data","production_model","production_columns", "params:save_path"],
                 outputs=["df_with_predict", "predict_describe"],
                 name="predict",
             ),
