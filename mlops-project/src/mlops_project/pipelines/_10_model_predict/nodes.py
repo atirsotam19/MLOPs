@@ -36,12 +36,12 @@ def model_predict(X: pd.DataFrame,
     X["y_pred"] = y_pred
 
     # Se tiveres y_true e y_proba no DataFrame, corre a avaliação
-    if "y_true" in X.columns:
+    if "loan_approved" in X.columns:
         try:
             y_proba = model.predict_proba(X[columns])[:, 1]
-            evaluate_model(X["y_true"].values, y_pred, y_proba, save_path=save_path)
+            evaluate_model(X["loan_approved"].values, y_pred, y_proba, save_path=save_path)
         except AttributeError:
-            logger.warning("O modelo não tem método predict_proba. ROC não gerado.")
+            logger.warning("Model has no predict_proba methid. ROC not generated.")
 
     describe_servings = X.describe().to_dict()
 
@@ -50,14 +50,14 @@ def model_predict(X: pd.DataFrame,
     return X, describe_servings
 
 def evaluate_model(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray, save_path="visualizations"):
-    """Gera, salva e mostra confusion matrix e ROC curve.
+    """Generate, save and show confusion matrix and ROC curve.
 
     Args:
     --
-        y_true (np.ndarray): Labels verdadeiros.
-        y_pred (np.ndarray): Previsões do modelo.
-        y_proba (np.ndarray): Probabilidades para a classe positiva.
-        save_path (str): Pasta onde salvar as imagens.
+        y_true (np.ndarray): True Labels.
+        y_pred (np.ndarray): Model Predictions.
+        y_proba (np.ndarray): Positive class probabilities.
+        save_path (str): Path where to save the images.
     """
     os.makedirs(save_path, exist_ok=True)
 

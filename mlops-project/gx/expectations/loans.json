@@ -141,7 +141,7 @@
       "expectation_type": "expect_column_values_to_be_between",
       "kwargs": {
         "column": "commercial_assets_value",
-        "max_value": 16731999.99999997,
+        "max_value": 16732000.0,
         "min_value": 0.0,
         "mostly": 0.98
       },
@@ -160,7 +160,7 @@
       "expectation_type": "expect_column_values_to_be_between",
       "kwargs": {
         "column": "luxury_assets_value",
-        "max_value": 36031999.99999997,
+        "max_value": 36032000.0,
         "min_value": 700000.0,
         "mostly": 0.98
       },
