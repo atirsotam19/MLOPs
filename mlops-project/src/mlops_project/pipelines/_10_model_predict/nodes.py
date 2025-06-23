@@ -31,17 +31,17 @@ def model_predict(X: pd.DataFrame,
     """
 
     # Predict
-    print("Colunas recebidas no DataFrame:", X.columns.tolist())
-
+    
     y_pred = model.predict(X[columns])
     X["y_pred"] = y_pred
 
-    if "loan_approved" in X.columns:
+    # Se tiveres y_true e y_proba no DataFrame, corre a avaliação
+    if "y_true" in X.columns:
         try:
             y_proba = model.predict_proba(X[columns])[:, 1]
-            evaluate_model(X["loan_approved"].values, y_pred, y_proba, save_path=save_path)
+            evaluate_model(X["y_true"].values, y_pred, y_proba, save_path=save_path)
         except AttributeError:
-            logger.warning("Model has no predict_proba method. ROC not generated.")
+            logger.warning("O modelo não tem método predict_proba. ROC não gerado.")
 
     describe_servings = X.describe().to_dict()
 
