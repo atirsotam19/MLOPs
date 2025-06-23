@@ -11,7 +11,7 @@ def dummy_data():
     return pd.DataFrame({
         'feature1': [1, 2, 3],
         'feature2': [4, 5, 6],
-        'y_true': [0, 1, 0]  # necessário para avaliar o modelo
+        'loan_approved': [0, 1, 0]  
     })
 
 @pytest.fixture
@@ -39,7 +39,7 @@ def test_model_predict_and_evaluate(dummy_data, dummy_model, dummy_columns, tmp_
     assert 'feature2' in describe
 
     # Testa a função evaluate_model (grava imagens no tmp_path)
-    y_true = dummy_data["y_true"].values
+    y_true = dummy_data["loan_approved"].values
     y_pred = df_with_pred["y_pred"].values
     y_proba = dummy_model.predict_proba(dummy_data[dummy_columns])[:, 1]
 
