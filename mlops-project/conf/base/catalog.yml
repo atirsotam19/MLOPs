@@ -217,9 +217,3 @@ confusion_matrix:
   dataset:
     type: matplotlib.MatplotlibWriter
     filepath: data/08_reporting/confusion_matrix.png
-
-roc_curve:
-  type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
-  dataset:
-    type: matplotlib.MatplotlibWriter
-    filepath: data/08_reporting/roc_curve.png

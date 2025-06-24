@@ -69,13 +69,3 @@ def evaluate_model(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray, 
     cm_path = os.path.join(save_path, "confusion_matrix.png")
     plt.savefig(cm_path)
     plt.close()
-
-    # ROC Curve
-    auc = roc_auc_score(y_true, y_proba)
-    fpr, tpr, _ = roc_curve(y_true, y_proba)
-    roc_disp = RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=auc)
-    roc_disp.plot()
-    plt.title(f"ROC Curve (AUC={auc:.2f})")
-    roc_path = os.path.join(save_path, "roc_curve.png")
-    plt.savefig(roc_path)
-    plt.close()
