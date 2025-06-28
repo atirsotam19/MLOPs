@@ -81,7 +81,6 @@ preprocessed_batch_data:
 validated_feature_engineered_batch:
   type: pandas.CSVDataset
   filepath: data/05_intermediate/validated_feature_engineered_batch.csv
-  #layer: intermediate
 
 feature_created_batch:
   type: pandas.CSVDataset
