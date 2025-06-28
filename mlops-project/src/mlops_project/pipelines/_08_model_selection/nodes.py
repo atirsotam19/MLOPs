@@ -34,8 +34,6 @@ def model_selection(X_train: pd.DataFrame,
                     X_test: pd.DataFrame, 
                     y_train: pd.DataFrame, 
                     y_test: pd.DataFrame,
-                    #champion_dict: Dict[str, Any],
-                    #champion_model : pickle.Pickler,
                     parameters: Dict[str, Any]):
     
     
@@ -83,31 +81,6 @@ def model_selection(X_train: pd.DataFrame,
     
     best_model_name = max(initial_results, key=initial_results.get)
     best_model = models_dict[best_model_name]
-
-    ##### HYPERPARAMETER TUNING WITH GRIDSEARCH #####
-
-    # logger.info(f"Best model is {best_model_name} with score {initial_results[best_model_name]}")
-    # logger.info('Starting second step of model selection : Hyperparameter tuning')
-
-    # # Perform hyperparameter tuning with GridSearchCV
-    # param_grid = parameters['hyperparameters'][best_model_name]
-    # with mlflow.start_run(experiment_id=experiment_id,nested=True):
-    #     gridsearch = GridSearchCV(best_model, param_grid, cv=2, scoring='accuracy', n_jobs=-1)
-    #     gridsearch.fit(X_train, y_train)
-    #     best_model = gridsearch.best_estimator_
-
-
-    # logger.info(f"Hypertunned model score: {gridsearch.best_score_}")
-    # pred_score = accuracy_score(y_test, best_model.predict(X_test))
-
-    # if champion_dict['test_score'] < pred_score:
-    #     logger.info(f"New champion model is {best_model_name} with score: {pred_score} vs {champion_dict['test_score']} ")
-    #     return best_model
-    # else:
-    #     logger.info(f"Champion model is still {champion_dict['regressor']} with score: {champion_dict['test_score']} vs {pred_score} ")
-    #     return champion_model
-    
-    #############
 
     ##### HYPERPARAMETER TUNING USING OPTUNA #####
 
@@ -164,10 +137,5 @@ def model_selection(X_train: pd.DataFrame,
         mlflow.log_metric("test_accuracy", pred_score)
         mlflow.sklearn.log_model(best_model, "model")
 
-    #if champion_dict['test_score'] < pred_score:
     logger.info(f"New champion model is {best_model_name} with score: {pred_score}.")
     return best_model
-
-    #else:
-        #logger.info(f"Champion model is still {champion_dict['regressor']} with score: {champion_dict['test_score']} vs {pred_score} ")
-        #return champion_model

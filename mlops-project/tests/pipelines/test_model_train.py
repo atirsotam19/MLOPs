@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
 import pandas as pd
-from src.mlops_project.pipelines._09_model_train.nodes import model_train  # adjust this import path if needed
+from src.mlops_project.pipelines._09_model_train.nodes import model_train 
 
 @pytest.fixture
 def sample_data():
@@ -18,7 +18,7 @@ def sample_data():
     y_train = pd.Series([0, 1, 0, 1])
     y_test = pd.Series([1, 0])
     parameters = {
-        "baseline_model_params": {"n_estimators": 5, "random_state": 42},
+        "baseline_model_params": {"n_estimators": 5, "random_state": 1},
         "use_feature_selection": False
     }
     best_columns = ["feat1", "feat2", "feat3"]

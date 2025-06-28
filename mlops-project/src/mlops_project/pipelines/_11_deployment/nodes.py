@@ -3,7 +3,7 @@
 def save_production_model(model, path):
     import joblib
     joblib.dump(model, path)
-    return model  # 🔁 Return value so Kedro can track it
+    return model  # Return value so Kedro can track it
 
 def save_production_columns(columns, path):
     import pickle

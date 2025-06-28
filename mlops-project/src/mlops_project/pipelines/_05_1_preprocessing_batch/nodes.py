@@ -8,9 +8,6 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-#conf_path = str(Path('') / settings.CONF_SOURCE)
-#conf_loader = OmegaConfigLoader(conf_source=conf_path)
-#credentials = conf_loader["credentials"]
 
 logger = logging.getLogger(__name__)
 

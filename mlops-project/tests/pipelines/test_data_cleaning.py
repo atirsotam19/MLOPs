@@ -17,7 +17,7 @@ def sample_raw_data():
 def test_clean_data_output_structure(sample_raw_data):
     cleaned_df = clean_data(sample_raw_data.copy())
 
-    # Check that datetime column is added
+    # Check if datetime column is present
     assert "datetime" in cleaned_df.columns
 
     # Check dropped columns
@@ -38,5 +38,4 @@ def test_clean_data_output_structure(sample_raw_data):
     assert cleaned_df["no_of_dependents"].dtype == object
     assert cleaned_df["loan_term"].dtype == object
 
-    # Check that column names have no leading/trailing spaces
     assert all([col == col.strip() for col in cleaned_df.columns])
