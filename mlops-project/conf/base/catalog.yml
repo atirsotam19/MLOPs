@@ -85,7 +85,7 @@ validated_feature_engineered_batch:
 
 feature_created_batch:
   type: pandas.CSVDataset
-  filepath: data/07_model_input/feature_created_batch.csv
+  filepath: data/03_primary/feature_created_batch.csv
   save_args:
     index: False
 
