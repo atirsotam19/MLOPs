@@ -8,7 +8,8 @@ from mlops_project.pipelines import (
     _02_data_ingestion as data_ingestion,
     _03_data_split as split_data,
     _04_preprocessing_train as preprocess_train,
-    _05_preprocessing_batch as preprocessing_batch,
+    _05_1_preprocessing_batch as preprocessing_batch,
+    _05_2_data_unit_tests_feature_engineering as data_unit_tests_feature_engineering,
     _06_split_train_pipeline as split_train,
     _07_feature_selection as feature_selection_pipeline,
     _08_model_selection as model_selection_pipeline,
@@ -27,6 +28,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
         split_data.create_pipeline() +
         preprocess_train.create_pipeline() +
         preprocessing_batch.create_pipeline() +
+        data_unit_tests_feature_engineering.create_pipeline() +
         split_train.create_pipeline() +
         feature_selection_pipeline.create_pipeline() +
         model_selection_pipeline.create_pipeline()  +
@@ -46,6 +48,7 @@ def register_pipelines() -> Dict[str, Pipeline]:
         "data_split": split_data.create_pipeline(),
         "data_preprocess_train": preprocess_train.create_pipeline(),
         "data_preprocess_batch": preprocessing_batch.create_pipeline(),
+        "data_unit_tests_feature_engineering": data_unit_tests_feature_engineering.create_pipeline(),
         "data_split_train": split_train.create_pipeline(),
         "feature_selection": feature_selection_pipeline.create_pipeline(),
         "model_selection": model_selection_pipeline.create_pipeline(),
