@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
-from mlops_project.pipelines._05_preprocessing_batch.nodes import (
+from mlops_project.pipelines._05_1_preprocessing_batch.nodes import (
     treat_outliers,
     feature_engineer,
     scale_encode,
