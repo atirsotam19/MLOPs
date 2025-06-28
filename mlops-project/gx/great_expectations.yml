@@ -103,6 +103,12 @@ fluent_datasources:
       test:
         type: dataframe
         batch_metadata: {}
+  engineered_features_datasource:
+    type: pandas
+    assets:
+      engineered_data:
+        type: dataframe
+        batch_metadata: {}
 notebooks:
 include_rendered_content:
   globally: false
