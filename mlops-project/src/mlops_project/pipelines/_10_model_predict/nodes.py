@@ -9,6 +9,7 @@ from typing import Dict, Tuple, Any
 import numpy as np  
 import pickle
 import matplotlib.pyplot as plt
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 import os
 import mlflow
 import mlflow.sklearn
@@ -43,7 +44,6 @@ def model_predict(X: pd.DataFrame,
         X["y_pred"] = y_pred
 
         mlflow.log_param("num_features", len(columns))
-        mlflow.log_metric("num_predictions", len(y_pred))
         mlflow.log_dict({"input_columns": list(columns)}, "input_schema.json")
 
         if "loan_approved" in X.columns:
@@ -83,5 +83,16 @@ def evaluate_model(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray, 
     plt.close()
     mlflow.log_artifact(cm_path, artifact_path="plots")
 
+    # Metrics
+    accuracy = accuracy_score(y_true, y_pred)
+    f1 = f1_score(y_true, y_pred, average="macro")
+    precision = precision_score(y_true, y_pred, average="macro")
+    recall = recall_score(y_true, y_pred)
+
     # Log metrics
-    mlflow.log_metric("accuracy", (y_true == y_pred).mean())
+    mlflow.log_metric("accuracy", accuracy)
+    mlflow.log_metric("f1_score", f1)
+    mlflow.log_metric("precision", precision)
+    mlflow.log_metric("recall", recall)
+
+    logger.info(f"Accuracy: {accuracy}, F1-Score: {f1}, Precision: {precision}, Recall: {recall}")
