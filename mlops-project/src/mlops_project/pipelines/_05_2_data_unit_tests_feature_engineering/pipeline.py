@@ -1,22 +1,17 @@
-
 """
-This is a boilerplate pipeline
-generated using Kedro 0.18.8
+Pipeline to validate feature engineering outputs.
 """
 
 from kedro.pipeline import Pipeline, node, pipeline
+from .nodes import validate_engineered_features
 
-from .nodes import validate_data
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return pipeline(
-        [
-            node(
-                func= validate_data,
-                inputs="cleaned_loans",
-                outputs= "reporting_tests",
-                name="data_unit_tests",
-            ),
-
-        ]
-    )
+    return pipeline([
+        node(
+            func=validate_engineered_features,
+            inputs="feature_created_batch",
+            outputs="validated_feature_engineered_batch",
+            name="validate_feature_engineering"
+        )
+    ])

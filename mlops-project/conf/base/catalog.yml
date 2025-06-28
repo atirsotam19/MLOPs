@@ -78,6 +78,17 @@ preprocessed_batch_data:
   type: pandas.CSVDataset
   filepath: data/03_primary/preprocessed_batch_data.csv
 
+validated_feature_engineered_batch:
+  type: pandas.CSVDataSet
+  filepath: data/05_intermediate/validated_feature_engineered_batch.csv
+  layer: intermediate
+
+feature_created_batch:
+  type: pandas.CSVDataSet
+  filepath: data/07_model_input/feature_created_batch.csv
+  save_args:
+    index: False
+
 trained_standard_scaler:
   type: kedro_mlflow.io.artifacts.MlflowArtifactDataset
   dataset:
