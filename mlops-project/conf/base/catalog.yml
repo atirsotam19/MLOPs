@@ -50,7 +50,7 @@ cleaned_loans:
 
 reporting_tests:
   type: pandas.CSVDataset
-  filepath: data/05_intermediate/data_tests.csv
+  filepath: data/02_intermediate/data_tests.csv
 
 ingested_data:
   type: pandas.CSVDataset
@@ -80,7 +80,7 @@ preprocessed_batch_data:
 
 validated_feature_engineered_batch:
   type: pandas.CSVDataset
-  filepath: data/05_intermediate/validated_feature_engineered_batch.csv
+  filepath: data/02_intermediate/validated_feature_engineered_batch.csv
 
 feature_created_batch:
   type: pandas.CSVDataset
