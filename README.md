@@ -35,7 +35,14 @@ Before running the project, ensure you have the following installed:
 
 ## Setup Instructions
 
-### Step 1: Install Dependencies
+### Step 1: Navigate to the Project Directory
+
+Before running any commands, make sure you're in the root directory of the project. Use the `cd` command to change to your project folder:
+
+```bash
+cd "path_to_your_project"
+```
+### Step 2: Install Dependencies
 To install the required Python packages listed in `requirements.txt`, run:
 ```bash
 make install
@@ -45,7 +52,7 @@ Alternatively, if you don't have Make installed, you can manually run:
 pip install -r requirements.txt
 ```
 
-### Step 2: Run Pipelines
+### Step 3: Run Pipelines
 To execute the pipelines defined in `pipelines_registry.py`, run:
 ```bash
 make run_pipelines
@@ -55,7 +62,7 @@ Or manually:
 python pipelines_registry.py
 ```
 
-### Step 3: Combined Installation and Execution
+### Step 4: Combined Installation and Execution
 To install dependencies and then run the pipelines in one step, use:
 ```bash
 make all
