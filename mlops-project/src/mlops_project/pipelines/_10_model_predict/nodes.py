@@ -10,6 +10,9 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 import os
+import mlflow
+import mlflow.sklearn
+import yaml
 
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, roc_curve, RocCurveDisplay, roc_auc_score
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
@@ -18,6 +21,7 @@ logger = logging.getLogger(__name__)
 
 def model_predict(X: pd.DataFrame,
                   model: pickle.Pickler, columns: pickle.Pickler, save_path="data/08_reporting") -> Tuple[pd.DataFrame, Dict[str, Any]]:
+    
     """Predict using the trained model.
 
     Args:
@@ -30,27 +34,34 @@ def model_predict(X: pd.DataFrame,
         scores (pd.DataFrame): Dataframe with new predictions.
     """
 
-    # Predict
-    
-    y_pred = model.predict(X[columns])
-    X["y_pred"] = y_pred
+    with open("conf/local/mlflow.yml") as f:
+        experiment_name = yaml.load(f, Loader=yaml.loader.SafeLoader)['tracking']['experiment']['name']
+    experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
 
-    # Se tiveres y_true e y_proba no DataFrame, corre a avaliação
-    if "loan_approved" in X.columns:
-        try:
-            y_proba = model.predict_proba(X[columns])[:, 1]
-            evaluate_model(X["loan_approved"].values, y_pred, y_proba, save_path=save_path)
-        except AttributeError:
-            logger.warning("Model has no predict_proba methid. ROC not generated.")
+    with mlflow.start_run(experiment_id=experiment_id, nested=True):
+        y_pred = model.predict(X[columns])
+        X["y_pred"] = y_pred
 
-    describe_servings = X.describe().to_dict()
+        mlflow.log_param("num_features", len(columns))
+        mlflow.log_metric("num_predictions", len(y_pred))
+        mlflow.log_dict({"input_columns": list(columns)}, "input_schema.json")
 
-    logger.info('Service predictions created.')
-    logger.info('#servings: %s', len(y_pred))
-    return X, describe_servings
+        if "loan_approved" in X.columns:
+            try:
+                y_proba = model.predict_proba(X[columns])[:, 1]
+                evaluate_model(X["loan_approved"].values, y_pred, y_proba, save_path=save_path)
+            except AttributeError:
+                logger.warning("Model has no predict_proba method. ROC not generated.")
+
+        describe_servings = X.describe().to_dict()
+        mlflow.log_dict(describe_servings, "serving_statistics.json")
+
+        logger.info("Predictions logged to MLflow.")
+        return X, describe_servings
 
 def evaluate_model(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray, save_path="visualizations"):
-    """Generate, save and show confusion matrix and ROC curve.
+    
+    """Generate, save and show confusion matrix.
 
     Args:
     --
@@ -59,6 +70,7 @@ def evaluate_model(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray, 
         y_proba (np.ndarray): Positive class probabilities.
         save_path (str): Path where to save the images.
     """
+
     os.makedirs(save_path, exist_ok=True)
 
     # Confusion Matrix
@@ -69,3 +81,7 @@ def evaluate_model(y_true: np.ndarray, y_pred: np.ndarray, y_proba: np.ndarray, 
     cm_path = os.path.join(save_path, "confusion_matrix.png")
     plt.savefig(cm_path)
     plt.close()
+    mlflow.log_artifact(cm_path, artifact_path="plots")
+
+    # Log metrics
+    mlflow.log_metric("accuracy", (y_true == y_pred).mean())
