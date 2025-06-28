@@ -1,8 +1,17 @@
-# Machine Learning Operations - Project
-# Group 13 - Loan Approval Predictions
+# Machine Learning Operations Project: Loan Approval Predictions  
+## Loan Approval Prediction
 
-[![Powered by Kedro](https://img.shields.io/badge/powered_by-kedro-ffc900?logo=kedro)](https://kedro.org)
+---
 
+### Team Members
+
+- **Afonso Dias** – Student ID: 20211540
+- **Leonor Mira** – Student ID: 20240658  
+- **Martim Tavares** – Student ID: 20240508  
+- **Rita Matos** – Student ID: 20211642
+- **Rita Palma** - Student ID: 20240661
+
+---
 ## Overview
 
 This project is designed to implement MLOps practices for managing machine learning workflows. It includes a `Makefile` to streamline common tasks such as installing dependencies, running pipelines, and cleaning temporary files. The project is powered by Kedro and was generated using `kedro 0.19.12`.
@@ -73,7 +82,7 @@ The dataset for this project is located in the `data/` directory. Ensure that th
 - **`data/04_feature/`**: Contains datasets with engineered features for modeling.
 - **`data/05_model_input/`**: Contains datasets prepared for model training and evaluation.
 - **`data/06_models/`**: Contains trained models and their metadata.
-- **`data/07_models_input/`**: Contains data used for inference or predictions with trained models.
+- **`data/07_models_output/`**: Contains data used for inference or predictions with trained models.
 - **`data/08_reporting/`**: Contains reporting data, such as metrics, visualizations, or summaries.
 
 ### Instructions
