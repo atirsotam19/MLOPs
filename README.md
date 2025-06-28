@@ -1,6 +1,6 @@
 # Machine Learning Operations Project: Loan Approval Predictions  
 ## Loan Approval Prediction
-
+### Master in Data Science and Advanced Analytics
 ---
 
 ### Team Members
@@ -9,7 +9,8 @@
 - **Leonor Mira** – Student ID: 20240658  
 - **Martim Tavares** – Student ID: 20240508  
 - **Rita Matos** – Student ID: 20211642
-- **Rita Palma** - Student ID: 20240661
+- **Rita Palma** – Student ID: 20240661
+
 
 ---
 ## Overview
