@@ -11,7 +11,7 @@ def sample_data_with_target():
     return pd.DataFrame({
         "feature1": [0.1, 0.2, 0.3],
         "feature2": [1, 2, 3],
-        "loan_approved": [0, 1, 0]  # target column
+        "loan_approved": [0, 1, 0]
     })
 
 

@@ -62,7 +62,7 @@ def test_get_or_create_experiment_id_creates_new_experiment():
         mock_last_run_instance.info.run_id = "mock_run_id"
         mock_last_run.return_value = mock_last_run_instance
 
-        # Dummy data
+        # Test data
         X_train = pd.DataFrame({
             'a': [1, 2, 3, 4],
             'b': [3, 4, 5, 6]
@@ -94,8 +94,6 @@ def test_get_or_create_experiment_id_creates_new_experiment():
             }
         }
 
-
-        # Run your function
         model_selection(X_train, X_test, y_train, y_test, parameters)
 
 

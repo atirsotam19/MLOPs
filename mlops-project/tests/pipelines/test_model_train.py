@@ -44,8 +44,6 @@ def test_model_train_basic(
     mock_run = MagicMock()
     mock_run.info.run_id = "fake_run_id"
     mock_start_run.return_value.__enter__.return_value = mock_run
-
-    # Mock mlflow.last_active_run to return the same mock run
     mock_last_active_run.return_value = mock_run
 
     X_train, X_test, y_train, y_test, parameters, best_columns = sample_data
@@ -54,7 +52,7 @@ def test_model_train_basic(
         X_train, X_test, y_train, y_test, parameters, best_columns
     )
 
-    # Simple assertions to verify outputs
+    # verify outputs
     assert "train_score" in results_dict
     assert "test_score" in results_dict
     assert len(columns) == len(best_columns)
