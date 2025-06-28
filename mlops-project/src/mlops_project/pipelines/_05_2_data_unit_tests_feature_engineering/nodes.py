@@ -16,11 +16,7 @@ def get_validation_results(checkpoint_result):
     meta = validation_result_["meta"]
     use_case = meta.get('expectation_suite_name')
 
-    df_validation = pd.DataFrame({}, columns=[
-        "Success", "Expectation Type", "Column", "Column Pair", "Max Value",
-        "Min Value", "Element Count", "Unexpected Count", "Unexpected Percent",
-        "Value Set", "Unexpected Value", "Observed Value"
-    ])
+    validation_rows = []
 
     for result in results:
         success = result.get('success', '')
@@ -40,26 +36,23 @@ def get_validation_results(checkpoint_result):
         if isinstance(observed_value, list):
             unexpected_value = [item for item in observed_value if item not in value_set]
 
-        df_validation = pd.concat([
-            df_validation,
-            pd.DataFrame.from_dict([{
-                "Success": success,
-                "Expectation Type": expectation_type,
-                "Column": column,
-                "Column Pair": (column_A, column_B),
-                "Max Value": max_value,
-                "Min Value": min_value,
-                "Element Count": element_count,
-                "Unexpected Count": unexpected_count,
-                "Unexpected Percent": unexpected_percent,
-                "Value Set": value_set,
-                "Unexpected Value": unexpected_value,
-                "Observed Value": observed_value
-            }])
-        ], ignore_index=True)
+        validation_rows.append({
+            "Success": success,
+            "Expectation Type": expectation_type,
+            "Column": column,
+            "Column Pair": (column_A, column_B),
+            "Max Value": max_value,
+            "Min Value": min_value,
+            "Element Count": element_count,
+            "Unexpected Count": unexpected_count,
+            "Unexpected Percent": unexpected_percent,
+            "Value Set": value_set,
+            "Unexpected Value": unexpected_value,
+            "Observed Value": observed_value
+        })
 
+    df_validation = pd.DataFrame(validation_rows)
     return df_validation
-
 
 def validate_engineered_features(df: pd.DataFrame) -> pd.DataFrame:
     project_root = Path(__file__).parents[4]
