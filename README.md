@@ -15,7 +15,7 @@
 ---
 ## Overview
 
-This project is designed to implement MLOps practices for managing machine learning workflows. It includes a `Makefile` to streamline common tasks such as installing dependencies, running pipelines, and cleaning temporary files. The project is powered by Kedro and was generated using `kedro 0.19.12`.
+This project is designed to implement MLOps practices for managing machine learning workflows. The project is powered by Kedro and was generated using `kedro 0.19.12`.
 
 Take a look at the [Kedro documentation](https://docs.kedro.org) to get started.
 
@@ -61,19 +61,23 @@ Or manually:
 ```bash
 python pipelines_registry.py
 ```
+The `pipelines_registry.py` file registers several individual and composite pipelines, including:
 
-### Step 4: Combined Installation and Execution
-To install dependencies and then run the pipelines in one step, use:
-```bash
-make all
-```
+- **Data cleaning and ingestion pipelines**
 
-### Step 4: Clean Temporary Files
-To remove temporary Python files and cache, run:
-```bash
-make clean
-```
-This will delete `__pycache__`, `.pyc`, and `.pyo` files.
+- **Data splitting and preprocessing pipelines**
+
+- **Feature engineering and selection pipelines**
+
+- **Model selection, training, and prediction pipelines**
+
+- **Deployment and data drift monitoring pipelines**
+
+It also defines two main composite pipelines:
+
+**training_pipeline**: combines all steps from data cleaning to model training.
+
+**batch_inference_pipeline**: combines steps for batch predictions, deployment, and data drift detection.
 
 ## How to run your Kedro pipeline
 
@@ -108,12 +112,29 @@ The dataset for this project is located in the `data/` directory. Ensure that th
 6. Use the `data/07_model_output/` directory for inference datasets.
 7. Reporting outputs will be saved in the `data/08_reporting/` directory.
 
+## Note: Every pipeline in src folder has a respective pytest in tests folder.
 
 ## How to test your Kedro project
 
-Have a look at the files `src/tests/test_run.py` and `src/tests/pipelines/data_science/test_pipeline.py` for instructions on how to write your tests. Run the tests as follows:
+Have a look at the files `tests/pipelines/` for instructions on how to write your tests. Run the tests as follows:
 ```bash
 pytest
+```
+To run the entire project pipelines:
+
+```bash
+kedro run
+```
+
+To run only the batch inference pipeline:
+
+```bash
+kedro run --pipeline batch_inference_pipeline
+```
+For coverage testing with pytest:
+
+```bash
+pytest --cov=src
 ```
 
 To configure the coverage threshold, look at the `.coveragerc` file.
@@ -122,33 +143,7 @@ To configure the coverage threshold, look at the `.coveragerc` file.
 
 > Note: Using `kedro jupyter` or `kedro ipython` to run your notebook provides these variables in scope: `catalog`, `context`, `pipelines` and `session`.
 
-### Jupyter
-To use Jupyter notebooks in your Kedro project, you need to install Jupyter:
-```bash
-pip install jupyter
-```
 
-After installing Jupyter, you can start a local notebook server:
-```bash
-kedro jupyter notebook
-```
-
-### JupyterLab
-To use JupyterLab, you need to install it:
-```bash
-pip install jupyterlab
-```
-
-You can also start JupyterLab:
-```bash
-kedro jupyter lab
-```
-
-### IPython
-And if you want to run an IPython session:
-```bash
-kedro ipython
-```
 
 ### How to ignore notebook output cells in `git`
 To automatically strip out all output cell contents before committing to `git`, you can use tools like [`nbstripout`](https://github.com/kynan/nbstripout). For example, you can add a hook in `.git/config` with:
@@ -159,14 +154,7 @@ This will run `nbstripout` before anything is committed to `git`.
 
 > *Note:* Your output cells will be retained locally.
 
-## Package your Kedro project
-
-[Further information about building project documentation and packaging your project](https://docs.kedro.org/en/stable/tutorial/package_a_project.html).
 
 ## File Structure
 - **`requirements.txt`**: Contains the list of Python dependencies for the project.
 - **`pipelines_registry.py`**: The main script for running pipelines.
-
-## Troubleshooting
-- If `make` commands fail, ensure Make is installed on your system. On Windows, you can install Make via tools like Chocolatey (`choco install make`) or use WSL (Windows Subsystem for Linux).
-- If Python dependencies fail to install, verify the `requirements.txt` file for version conflicts.
