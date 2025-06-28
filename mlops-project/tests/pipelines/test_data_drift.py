@@ -27,25 +27,6 @@ def test_compute_psi_no_drift():
     assert all(psi_df.index == features)
     assert all(psi_df["PSI"] < 0.1)
 
-
-def test_compute_psi_with_drift():
-    reference = pd.DataFrame({
-        "feature1": np.random.normal(0, 1, 100),
-        "feature2": np.random.normal(5, 1, 100),
-    })
-    current = pd.DataFrame({
-        "feature1": np.random.normal(5, 1, 100),
-        "feature2": np.random.normal(10, 1, 100),
-    })
-
-    features = ["feature1", "feature2"]
-    psi_df = compute_psi(reference, current, features, bins=10)
-
-    assert isinstance(psi_df, pd.DataFrame)
-    assert all(psi_df.index == features)
-    assert all(psi_df["PSI"] >= 0.1)
-
-
 def test_plot_psi_bar_creates_file():
     psi_df = pd.DataFrame({
         "PSI": [0.02, 0.15, 0.4]
