@@ -1,112 +1,126 @@
-# Machine Learning Operations Project: Loan Approval Predictions  
-## Loan Approval Prediction
-### Master in Data Science and Advanced Analytics
+# Machine Learning Operations Project: Loan Approval Predictions
+
+## Master in Data Science and Advanced Analytics
+
 ---
 
 ### Team Members
 
-- **Afonso Dias** – Student ID: 20211540
-- **Leonor Mira** – Student ID: 20240658  
-- **Martim Tavares** – Student ID: 20240508  
-- **Rita Matos** – Student ID: 20211642
-- **Rita Palma** – Student ID: 20240661
-
+* **Afonso Dias** – 20211540
+* **Leonor Mira** – 20240658
+* **Martim Tavares** – 20240508
+* **Rita Matos** – 20211642
+* **Rita Palma** – 20240661
 
 ---
+
 ## Overview
 
-This project is designed to implement MLOps practices for managing machine learning workflows using a [loan approval prediction dataset](https://www.kaggle.com/datasets/architsharma01/loan-approval-prediction-dataset). The project is powered by Kedro and was generated using `kedro 0.19.12`.
+This project applies MLOps principles to a **Loan Approval Prediction** task, using a publicly available dataset from [Kaggle](https://www.kaggle.com/datasets/architsharma01/loan-approval-prediction-dataset).
 
-## Rules and guidelines
+The project is built using the **Kedro** framework and was generated with version `0.19.12`. It features a modular and testable pipeline for end-to-end machine learning workflows, including model training, evaluation, and data drift monitoring.
 
-In order to get the best out of the template:
-- Don't remove any lines from the `.gitignore` file we provide.
-- Don't commit data to your repository.
-- Don't commit any credentials or your local configuration to your repository. Keep all your credentials and local configuration in `conf/local/`.
+---
+
+## Project Guidelines
+
+To maintain code quality and reproducibility, please follow these rules:
+
+* Do **not** remove any lines from the provided `.gitignore`.
+* Never commit data files to the repository.
+* Never commit credentials or local configurations. Store these in `conf/local/`.
+
+---
 
 ## Setup Instructions
 
-### Step 1: Navigate to the Project Directory
-
-Before running any commands, make sure you're in the root directory of the project. Use the `cd` command to change to your project folder:
+### Navigate to the Project Directory
 
 ```bash
-cd "path_to_your_project"
+cd path_to_your_project
 ```
-### Step 2: Install Dependencies
-To install the required Python packages listed in `requirements.txt`, run:
+
+### Create a Virtual Environment and Install Dependencies
+
+Create a virtual environment and then run:
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 3: Run Pipelines
-The `pipelines_registry.py` file registers several individual and composite pipelines, including:
+---
 
-- **Data cleaning and ingestion pipelines**
+## Running the Pipelines
 
-- **Data splitting and preprocessing pipelines**
+### Registered Pipelines
 
-- **Feature engineering and selection pipelines**
+The `pipeline_registry.py` file defines the following:
 
-- **Model selection, training, and prediction pipelines**
+#### Individual Pipelines
 
-- **Deployment and data drift monitoring pipelines**
+* `data_cleaning`
+* `data_unit_tests`
+* `data_ingestion`
+* `data_split`
+* `data_preprocess_train`
+* `data_preprocess_batch`
+* `data_unit_tests_feature_engineering`
+* `data_split_train`
+* `feature_selection`
+* `model_selection`
+* `model_train`
+* `model_predict`
+* `deployment`
+* `data_drift`
 
-It also defines two main composite pipelines:
+#### Group Pipelines
 
-**training_pipeline (default)**: combines all steps from data cleaning to model training.
+* **`training_pipeline`** *(default)*: Combines the full ML lifecycle — from data cleaning to model training.
+* **`batch_inference_pipeline`**: Designed for batch predictions, deployment, and data drift detection.
+* **`__default__`**: Alias for `training_pipeline`.
 
-**batch_inference_pipeline**: combines steps for batch predictions, deployment, and data drift detection.
+---
 
-## How to run your Kedro pipeline
+### Run the Pipelines
 
-These are the pipelines in pipeline_registry.py:
+To run the **default training pipeline**:
 
-- Individual Pipelines
-"data_cleaning": data_cleaning_pipeline.create_pipeline(),
-"data_unit_tests": data_tests.create_pipeline(),
-"data_ingestion": data_ingestion.create_pipeline(),
-"data_split": split_data.create_pipeline(),
-"data_preprocess_train": preprocess_train.create_pipeline(),
-"data_preprocess_batch": preprocessing_batch.create_pipeline(),
-"data_unit_tests_feature_engineering": data_unit_tests_feature_engineering.create_pipeline(),
-"data_split_train": split_train.create_pipeline(),
-"feature_selection": feature_selection_pipeline.create_pipeline(),
-"model_selection": model_selection_pipeline.create_pipeline(),
-"model_train": model_train_pipeline.create_pipeline(),
-"model_predict": model_predict_pipeline.create_pipeline(),
-"deployment": deployment_pipeline.create_pipeline(),
-"data_drift": data_drift_pipeline.create_pipeline(),
-
-- Group Pipelines
-"training_pipeline": data_cleaning_pipeline + data_tests + data_ingestion + split_data + preprocess_train + preprocessing_batch + data_unit_tests_feature_engineering + split_train + feature_selection_pipeline + model_selection_pipeline + model_train_pipeline,
-"batch_inference_pipeline": model_predict_pipeline + deployment_pipeline + data_drift_pipeline,
-"__default__": training_pipeline,
-
-You can run the default pipeline (training_pipeline) using the following command:
 ```bash
 kedro run
 ```
 
-To execute pipelines individually, run:
+To run a **specific individual pipeline**:
+
 ```bash
 kedro run --pipeline pipeline_name
 ```
 
-To execute groups of pipelines, run:
+To run a **grouped pipeline**:
+
 ```bash
 kedro run --pipeline pipeline_group_name
 ```
 
-## Dataset
-### Instructions
-The `data/` folder has all types of data saved throughout the project. Place the raw dataset file in the `data/01_raw/` directory and then you'll be able to run everything and get the same results.
+---
 
-## Note: Every pipeline in src folder has a respective pytest in tests folder.
+## Dataset Usage
 
-## How to use Pytest Coverage
+Place the raw dataset file inside the following directory:
 
-For coverage testing with pytest:
+```text
+data/01_raw/
+```
+
+Once the raw data is in place, you can run the full pipeline to replicate results.
+
+---
+
+## Testing
+
+Every pipeline module in the `src/` folder has a corresponding test module in the `tests/` folder.
+
+### Run Tests with Coverage
+
+To check code coverage using `pytest`:
 
 ```bash
 pytest --cov=src
