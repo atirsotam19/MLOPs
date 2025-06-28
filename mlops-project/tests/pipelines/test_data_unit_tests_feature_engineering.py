@@ -1,70 +1,50 @@
-import pytest
 import pandas as pd
-import numpy as np
-
-from mlops_project.pipelines._05_2_data_unit_tests_feature_engineering.nodes import (
-    validate_engineered_features
-)
-
+import pytest
+import great_expectations as ge
+from preprocessing_batch_05.nodes import feature_engineer
 
 @pytest.fixture
-def valid_feature_engineered_df():
+def sample_input_df():
     return pd.DataFrame({
-        "total_assets": [1000000, 2000000],
-        "loan_to_assets_ratio": [0.1, 0.3],
-        "debt_to_income_ratio": [0.5, 1.2],
-        "loan_score": [350.0, 480.0],
-        "assets_per_dependent": [500000, 1000000],
-        "loan_amount_per_month": [10000, 15000],
-        "assets_minus_loan": [800000, 1700000],
-        "is_high_risk_profile": [0, 1],
-        "loan_term_group": ["medium", "short"],
-        "cibil_score_bin": ["medium", "low"],
-        "is_graduate_and_employed": [1, 0]
+        "residential_assets_value": [100000, 500000],
+        "commercial_assets_value": [200000, 300000],
+        "luxury_assets_value": [50000, 100000],
+        "bank_asset_value": [150000, 250000],
+        "loan_amount": [100000, 200000],
+        "income_annum": [500000, 1000000],
+        "no_of_dependents": [1, 2],
+        "loan_term": [10, 15],
+        "cibil_score": [600, 750],
+        "graduate": [1, 1],
+        "self_employed": [0, 1],
+        "datetime": ["2021-01-01", "2021-01-02"]
     })
 
 
-def test_valid_data_passes(valid_feature_engineered_df):
-    """Should pass with correct data."""
-    result = validate_engineered_features(valid_feature_engineered_df)
-    assert isinstance(result, pd.DataFrame)
-    assert not result.isnull().any().any()
+def test_feature_engineering(sample_input_df):
+    # Run the feature engineering function
+    engineered_df = feature_engineer(sample_input_df)
+    df = ge.from_pandas(engineered_df)
 
+    # --- 1. Required columns ---
+    expected_columns = [
+        "total_assets", "loan_to_assets_ratio", "debt_to_income_ratio", "loan_score",
+        "assets_per_dependent", "loan_amount_per_month", "assets_minus_loan",
+        "is_high_risk_profile", "loan_term_group", "cibil_score_bin", "is_graduate_and_employed"
+    ]
+    for col in expected_columns:
+        result = df.expect_column_to_exist(col)
+        assert result.success, f"Missing expected column: {col}"
 
-def test_missing_columns_raises(valid_feature_engineered_df):
-    """Should raise ValueError if required columns are missing."""
-    df_missing = valid_feature_engineered_df.drop(columns=["loan_score"])
-    with pytest.raises(ValueError, match="Missing engineered columns"):
-        validate_engineered_features(df_missing)
+    # --- 2. Value checks ---
+    assert df.expect_column_values_to_be_between("total_assets", min_value=0).success
+    assert df.expect_column_values_to_be_between("loan_to_assets_ratio", min_value=0, max_value=10).success
+    assert df.expect_column_values_to_be_between("debt_to_income_ratio", min_value=0, max_value=10).success
+    assert df.expect_column_values_to_be_in_set("is_high_risk_profile", [0, 1]).success
+    assert df.expect_column_values_to_be_in_set("is_graduate_and_employed", [0, 1]).success
+    assert df.expect_column_values_to_be_in_set("cibil_score_bin", ["low", "medium", "high"]).success
+    assert df.expect_column_values_to_be_in_set("loan_term_group", ["short", "medium", "long"]).success
 
-
-def test_nan_raises(valid_feature_engineered_df):
-    """Should raise ValueError if NaNs are present."""
-    df_nan = valid_feature_engineered_df.copy()
-    df_nan.loc[0, "total_assets"] = np.nan
-    with pytest.raises(ValueError, match="NaNs found in engineered features"):
-        validate_engineered_features(df_nan)
-
-
-def test_inf_raises(valid_feature_engineered_df):
-    """Should raise ValueError if infinite values are present."""
-    df_inf = valid_feature_engineered_df.copy()
-    df_inf.loc[1, "loan_to_assets_ratio"] = np.inf
-    with pytest.raises(ValueError, match="Infinite values found"):
-        validate_engineered_features(df_inf)
-
-
-def test_out_of_bounds_ratio_raises(valid_feature_engineered_df):
-    """Should assert if ratio is too high."""
-    df_high_ratio = valid_feature_engineered_df.copy()
-    df_high_ratio["loan_to_assets_ratio"] = [0.1, 999]
-    with pytest.raises(AssertionError, match="loan_to_assets_ratio out of bounds"):
-        validate_engineered_features(df_high_ratio)
-
-
-def test_invalid_bin_labels_raises(valid_feature_engineered_df):
-    """Should raise ValueError if invalid bin labels are used."""
-    df_invalid_bin = valid_feature_engineered_df.copy()
-    df_invalid_bin["cibil_score_bin"] = ["banana", "low"]
-    with pytest.raises(ValueError, match="Invalid cibil_score_bin values"):
-        validate_engineered_features(df_invalid_bin)
+    # --- 3. Null check ---
+    for col in expected_columns:
+        assert df.expect_column_values_to_not_be_null(col).success, f"Nulls found in {col}"
