@@ -90,7 +90,7 @@ The dataset for this project is located in the `data/` directory. Ensure that th
 - **`data/04_feature/`**: Contains datasets with engineered features for modeling.
 - **`data/05_model_input/`**: Contains datasets prepared for model training and evaluation.
 - **`data/06_models/`**: Contains trained models and their metadata.
-- **`data/07_models_output/`**: Contains data used for inference or predictions with trained models.
+- **`data/07_model_output/`**: Contains data used for inference or predictions with trained models.
 - **`data/08_reporting/`**: Contains reporting data, such as metrics, visualizations, or summaries.
 
 ### Instructions
@@ -105,7 +105,7 @@ The dataset for this project is located in the `data/` directory. Ensure that th
    ```
 4. Use the `data/05_model_input/` directory for training and evaluation datasets.
 5. Trained models will be saved in the `data/06_models/` directory.
-6. Use the `data/07_models_input/` directory for inference datasets.
+6. Use the `data/07_model_output/` directory for inference datasets.
 7. Reporting outputs will be saved in the `data/08_reporting/` directory.
 
 
