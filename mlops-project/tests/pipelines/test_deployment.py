@@ -7,7 +7,6 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from src.mlops_project.pipelines._11_deployment.pipeline import (save_production_model,save_production_columns,save_production_metrics,)
 
-# Test cases for the deployment nodes in the MLOps project
 def test_save_production_model():
     model = RandomForestClassifier(n_estimators=10, random_state=42)
     model.fit([[0, 1], [1, 0]], [0, 1])

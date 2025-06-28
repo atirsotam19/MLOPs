@@ -25,7 +25,6 @@ def test_data_expectations(valid_dataframe):
     """Test the `test_data` node runs without assertion errors."""
     validation_df = validate_data(valid_dataframe)
 
-    # Check if returned dataframe is not empty
     assert not validation_df.empty, "Validation results should not be empty."
 
     # Check if all expectations passed

@@ -19,19 +19,19 @@ def sample_df():
 def test_split_random_row_counts(sample_df):
     ref_data, ana_data = split_random(sample_df)
     
-    # Check that the total number of rows matches input
+    # Check that the total number of rows matches the inputs
     assert len(ref_data) + len(ana_data) == len(sample_df)
 
 def test_split_random_disjoint(sample_df):
     ref_data, ana_data = split_random(sample_df)
     
-    # Ensure no overlapping indices
+    # Ensure there are no overlapping indices
     assert set(ref_data.index).isdisjoint(set(ana_data.index))
 
 def test_split_random_ratio(sample_df):
     ref_data, ana_data = split_random(sample_df)
     
-    # Roughly test 80/20 split (tolerance for small sample size)
+    # test 80/20 split
     assert len(ref_data) == 8
     assert len(ana_data) == 2
 

@@ -65,6 +65,3 @@ def test_create_pipeline():
     assert hasattr(pl, "nodes")
     assert len(pl.nodes) == 1
     assert pl.nodes[0].name == "split"
-
-
-

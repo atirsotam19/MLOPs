@@ -53,7 +53,7 @@ def test_feature_selection_drops_high_corr_and_rfe(monkeypatch, correlated_df):
     class DummyRFE:
         def __init__(self, estimator): pass
         def fit(self, X, y):
-            self.support_ = np.array([True] * X.shape[1])  # or any mask with length == X.shape[1]
+            self.support_ = np.array([True] * X.shape[1]) 
             return self
         def get_support(self, arg):
             return self.support_
@@ -85,7 +85,6 @@ def test_feature_selection_no_method(monkeypatch, correlated_df):
         "feature_selection": "none",
     }
 
-    # Should return all numeric columns since no matching feature_selection method
     selected_cols = feature_selection(correlated_df, y, params)
 
     expected_cols = correlated_df.select_dtypes(include=[np.number]).columns.tolist()
