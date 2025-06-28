@@ -1,6 +1,9 @@
+import matplotlib
+matplotlib.use("Agg")  # Set non-GUI backend for environments without display
+
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import os
 from scipy.spatial.distance import jensenshannon
 
